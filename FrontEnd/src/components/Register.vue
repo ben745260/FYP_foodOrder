@@ -8,7 +8,7 @@
         <div class="card">
           <div class="card-body">
             <h2 class="card-title text-center mb-4">Register</h2>
-            <form @submit.prevent="submitFrom">
+            <form @submit.prevent="submitForm">
               <div class="mb-4">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" v-model="username" required>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { register } from '../methods/register';
+import apiClient from '@/axios/apiClient';
 
 export default {
   data() {
@@ -49,16 +49,40 @@ export default {
     };
   },
   methods: {
-    submitFrom() {
+    submitForm() {
       if (this.password !== this.confirmPassword) {
         this.passwordMismatch = true;
         return;
       }
-
-      register({
+      apiClient.post('/users/', {
         username: this.username,
         password: this.password
-      }); // Pass the registerUser data object as an argument
+      })
+        .then(response => {
+          this.$router.push('/login');
+        })
+        .catch(error => {
+          // Handle registration error
+          console.log(error.response.data.message);
+          let response = error.response.data;
+          for (let property in response) {
+            if (response.hasOwnProperty(property)) {
+              if (Array.isArray(response[property])) {
+                response[property].forEach(errorMsg => {
+                  console.log(errorMsg);
+                  this.$toast.error(errorMsg, {
+                    duration: 6000
+                  });
+                });
+              } else {
+                console.log(response[property]);
+                this.$toast.error(response[property], {
+                  duration: 6000
+                });
+              }
+            }
+          }
+        });
     }
   }
 };

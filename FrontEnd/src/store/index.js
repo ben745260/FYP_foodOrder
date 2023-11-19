@@ -1,4 +1,5 @@
-import { createStore } from 'vuex'
+import { createStore } from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 
 export default createStore({
   state: {
@@ -8,17 +9,18 @@ export default createStore({
   },
   mutations: {
     setToken(state, token) {
-      state.token = token
-      state.isAuthenticated = true
+      state.token = token;
+      state.isAuthenticated = true;
     },
     removeToken(state) {
-      state.token = ''
-      state.isAdmin = false
-      state.isAuthenticated = false
+      state.token = '';
+      state.isAdmin = false;
+      state.isAuthenticated = false;
     },
   },
   actions: {
   },
   modules: {
-  }
-})
+  },
+  plugins: [createPersistedState()],
+});

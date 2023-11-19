@@ -8,7 +8,7 @@
         <div class="card">
           <div class="card-body">
             <h2 class="card-title text-center mb-4">Login</h2>
-            <form @submit.prevent="submitFrom">
+            <form @submit.prevent="submitForm">
               <div class="mb-4">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" v-model="username" required>
@@ -30,22 +30,46 @@
 </template>
 
 <script>
-import { login } from '../methods/login';
-
+import apiClient from '@/axios/apiClient';
 
 export default {
   data() {
     return {
-      username: '', // Changed variable name from "email" to "username"
+      username: '',
       password: ''
     };
   },
   methods: {
-    submitFrom() {
-      login({
+    submitForm() {
+      apiClient.post('/token/login/', {
         username: this.username,
         password: this.password
-      });
+      })
+        .then(response => {
+          const token = response.data.auth_token;
+          console.log(token);
+          this.$store.commit('setToken', token);
+          this.$router.push('/dashboard');
+        })
+        .catch(error => {
+          // Handle login error
+          let response = error.response.data;
+          for (let property in response) {
+            if (response.hasOwnProperty(property)) {
+              if (Array.isArray(response[property])) {
+                response[property].forEach(errorMsg => {
+                  this.$toast.error(errorMsg, {
+                    duration: 6000
+                  });
+                });
+              } else {
+                this.$toast.error(response[property], {
+                  duration: 6000
+                });
+              }
+            }
+          }
+        });
     }
   }
 };
