@@ -2,10 +2,12 @@ import { createStore } from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 
 export default createStore({
-  state: {
-    isAuthenticated: false,
-    isAdmin: false,
-    token: '',
+  state() {
+    return {
+      isAuthenticated: false,
+      isAdmin: false,
+      token: '',
+    };
   },
   mutations: {
     setToken(state, token) {

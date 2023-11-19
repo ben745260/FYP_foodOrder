@@ -1,16 +1,19 @@
 <template>
     <div>
-      <h1>Test Page</h1>
-      <button @click="navigateToHome">Go to Home</button>
+      <h1>Token: {{ token }}</h1>
     </div>
   </template>
   
   <script>
+  import { mapState } from 'vuex';
+  
   export default {
-    methods: {
-      navigateToHome() {
-        this.$router.push('/');
-      },
+    computed: {
+      ...mapState(['token']),
     },
   };
   </script>
+  
+  <style>
+  /* Your styles here */
+  </style>
