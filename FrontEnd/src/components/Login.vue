@@ -1,5 +1,5 @@
 <template>
-  <div class="container d-flex align-items-center justify-content-center">
+  <div class="container-fluid d-flex align-items-center justify-content-center">
     <div class="row justify-content-center">
       <div class="col-md-12">
         <h1 class="text-center mb-4">Food Ordering System</h1>
@@ -52,27 +52,4 @@ export default {
 </script>
 
 <style scoped>
-.card {
-  border: none;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.card-title {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.btn-primary {
-  background-color: #007bff;
-  border-color: #007bff;
-}
-
-.btn-primary:hover {
-  background-color: #0069d9;
-  border-color: #0062cc;
-}
-
-.btn-primary:focus {
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
-}
 </style>

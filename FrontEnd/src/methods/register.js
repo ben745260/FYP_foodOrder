@@ -1,4 +1,8 @@
 import apiClient from '@/axios/apiClient';
+// import {useToast} from 'vue-toast-notification';
+// import 'vue-toast-notification/dist/theme-sugar.css';
+
+// const $toast = useToast();
 
 const register = function (registerUser) {
     apiClient.post('/users/', {
@@ -6,7 +10,6 @@ const register = function (registerUser) {
         password: registerUser.password
     })
     .then(response => {
-        console.log("added registration");
         this.$router.push('/login');
     })
     .catch(error => {
@@ -18,15 +21,15 @@ const register = function (registerUser) {
                 if (Array.isArray(response[property])) {
                     response[property].forEach(errorMsg => {
                         console.log(errorMsg);
-                        // this.$toast.error(errorMsg, {
-                        //     duration: 6000
-                        // });
+                        $toast.error(errorMsg, {
+                            duration: 6000
+                        });
                     });
                 } else {
                     console.log(errorMsg);
-                    // this.$toast.error(errorMsg, {
-                    //     duration: 6000
-                    // });
+                    $toast.error(errorMsg, {
+                        duration: 6000
+                    });
                 }
             }
         }

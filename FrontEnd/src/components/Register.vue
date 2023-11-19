@@ -1,5 +1,5 @@
 <template>
-  <div class="container d-flex align-items-center justify-content-center">
+  <div class="container-fluid d-flex align-items-center justify-content-center">
     <div class="row justify-content-center">
       <div class="col-md-12">
         <h1 class="text-center mb-4">Food Ordering System</h1>
@@ -54,7 +54,7 @@ export default {
         this.passwordMismatch = true;
         return;
       }
-      
+
       register({
         username: this.username,
         password: this.password
