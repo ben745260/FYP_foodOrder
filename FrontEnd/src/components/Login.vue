@@ -48,7 +48,7 @@ export default {
         .then(response => {
           const token = response.data.auth_token;
           console.log(token);
-          this.$store.commit('setToken', token);
+          this.$store.commit('setToken', token, this.username);
           this.$router.push('/dashboard');
         })
         .catch(error => {

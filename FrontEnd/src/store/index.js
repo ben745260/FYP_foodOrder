@@ -7,11 +7,13 @@ export default createStore({
       isAuthenticated: false,
       isAdmin: false,
       token: '',
+      username: '',
     };
   },
   mutations: {
-    setToken(state, token) {
+    setToken(state, token, username) {
       state.token = token;
+      state.username = username;
       state.isAuthenticated = true;
     },
     removeToken(state) {
