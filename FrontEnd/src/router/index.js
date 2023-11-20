@@ -99,11 +99,11 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-router.afterEach(() => {
-  const navbarToggler = document.querySelector('.navbar-toggler');
-  if (navbarToggler.getAttribute('aria-expanded') === 'true') {
-    navbarToggler.click();
-  }
-});
+// router.afterEach(() => {
+//   const navbarToggler = document.querySelector('.navbar-toggler');
+//   if (navbarToggler.getAttribute('aria-expanded') === 'true') {
+//     navbarToggler.click();
+//   }
+// });
 
 export default router;
