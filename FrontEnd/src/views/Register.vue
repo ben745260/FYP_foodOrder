@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid d-flex align-items-center justify-content-center">
+  <div class="container-fluid d-flex align-items-center justify-content-center h-100">
     <div class="row justify-content-center">
       <div class="col-md-12">
         <h1 class="text-center mb-4">Food Ordering System</h1>
@@ -7,7 +7,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
-            <h2 class="card-title text-center mb-4">Login</h2>
+            <h2 class="card-title text-center mb-4">Register</h2>
             <form @submit.prevent="submitForm">
               <div class="mb-4">
                 <label for="username" class="form-label">Username</label>
@@ -17,9 +17,16 @@
                 <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" id="password" v-model="password" required>
               </div>
-              <button type="submit" class="btn btn-primary w-100 mb-3">Login</button>
+              <div class="mb-4">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" id="confirmPassword" v-model="confirmPassword" required>
+              </div>
+              <button type="submit" class="btn btn-primary w-100 mb-3">Register</button>
               <div class="text-center">
-                <small>Don't have an account? <router-link to="/register">Register</router-link></small>
+                <small>Already have an account? <router-link to="/login">Login</router-link></small>
+              </div>
+              <div v-if="passwordMismatch" class="text-center text-danger mt-2">
+                Passwords do not match.
               </div>
             </form>
           </div>
@@ -36,33 +43,39 @@ export default {
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      confirmPassword: '',
+      passwordMismatch: false
     };
   },
   methods: {
     submitForm() {
-      apiClient.post('/token/login/', {
+      if (this.password !== this.confirmPassword) {
+        this.passwordMismatch = true;
+        return;
+      }
+      apiClient.post('/users/', {
         username: this.username,
         password: this.password
       })
         .then(response => {
-          const token = response.data.auth_token;
-          console.log(token);
-          this.$store.commit('setToken', token, this.username);
-          this.$router.push('/dashboard');
+          this.$router.push('/login');
         })
         .catch(error => {
-          // Handle login error
+          // Handle registration error
+          console.log(error.response.data.message);
           let response = error.response.data;
           for (let property in response) {
             if (response.hasOwnProperty(property)) {
               if (Array.isArray(response[property])) {
                 response[property].forEach(errorMsg => {
+                  console.log(errorMsg);
                   this.$toast.error(errorMsg, {
                     duration: 6000
                   });
                 });
               } else {
+                console.log(response[property]);
                 this.$toast.error(response[property], {
                   duration: 6000
                 });
@@ -74,6 +87,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-</style>

@@ -18,6 +18,7 @@ export default createStore({
     },
     removeToken(state) {
       state.token = '';
+      state.username = '';
       state.isAdmin = false;
       state.isAuthenticated = false;
     },

@@ -1,13 +1,13 @@
 <template>
     <div>
-        <h1>Dashboard</h1>
-        <!-- Your dashboard content here -->
+        <h1>Menus</h1>
+        <!-- Your menus content here -->
     </div>
 </template>
   
 <script>
 export default {
-    name: 'Dashboard',
+    name: 'Menus',
     // Add any additional logic or data properties here
 };
 </script>
