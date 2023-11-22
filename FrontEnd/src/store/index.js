@@ -11,7 +11,7 @@ export default createStore({
     };
   },
   mutations: {
-    setToken(state, token, username) {
+    setToken(state, { token, username }) {
       state.token = token;
       state.username = username;
       state.isAuthenticated = true;
