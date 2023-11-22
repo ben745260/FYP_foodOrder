@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime
+from django.contrib.auth.models import User
 
 class ProductCategory(models.Model):
     category_id = models.AutoField(primary_key=True)
@@ -25,3 +26,13 @@ class Product(models.Model):
             ext = self.image.name.split('.')[-1]
             self.image.name = f"{self.product_name}.{ext}"
         super().save(*args, **kwargs)
+
+class Order(models.Model):
+    order_id = models.AutoField(primary_key=True)
+    order_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    order_items = models.ManyToManyField('Product')
+    order_lastEditor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='last_editor')
+    order_lastUpdateTime = models.DateField(default=datetime.now().strftime("%Y-%m-%d"), blank=True, null=True)
+
+    def __str__(self):
+        return str(self.order_user.username)

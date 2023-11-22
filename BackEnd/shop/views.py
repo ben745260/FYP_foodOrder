@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from rest_framework import generics, status
+from rest_framework import generics, status, viewsets
 from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
 from rest_framework.response import Response
@@ -9,8 +9,8 @@ from django.contrib.auth import authenticate
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from .models import Product
-from .serializers import ProductSerializer, UserSerializer
+from .models import Product, Order
+from .serializers import ProductSerializer, UserSerializer, OrderSerializer
 
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):
@@ -22,6 +22,7 @@ class ProductRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
+# ================================================================
 
 class UserRegistrationView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -46,3 +47,14 @@ class UserListAPIView(generics.ListAPIView):
     serializer_class = UserSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
+
+# =================================================================
+
+class OrderListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+
+class OrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
