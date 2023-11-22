@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.conf.urls.static import static
 from django.conf import settings
 from django.urls import path, include
 from shop.views import ProductListCreateAPIView, ProductRetrieveUpdateDestroyAPIView, UserRegistrationView, login, OrderListCreateAPIView, OrderRetrieveUpdateDestroyAPIView
@@ -14,4 +15,4 @@ urlpatterns = [
     path('api/orders/', OrderListCreateAPIView.as_view(), name='order-list-create'),
     path('api/orders/<int:pk>/', OrderRetrieveUpdateDestroyAPIView.as_view(), name='order-retrieve-update-destroy'),
 
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
