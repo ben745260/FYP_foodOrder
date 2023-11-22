@@ -9,6 +9,7 @@ import Dashboard from '../components/Dashboard.vue';
 import Orders from '../components/Orders.vue';
 import Tables from '../components/Tables.vue';
 import Menus from '../components/Menus.vue';
+import Settings from '../components/Settings.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -46,6 +47,10 @@ const router = createRouter({
         {
           path: 'menus',
           component: Menus,
+        },
+        {
+          path: 'settings',
+          component: Settings,
         },
       ],
     },

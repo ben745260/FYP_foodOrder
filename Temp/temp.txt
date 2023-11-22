@@ -1,0 +1,21 @@
+This are the ProductCategory and Product model in django 
+class ProductCategory(models.Model):
+    category_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+class Product(models.Model):
+    product_id = models.AutoField(primary_key=True)
+    product_name = models.CharField(max_length=50)
+    category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, null=True)
+    price = models.IntegerField(default=0)
+    pub_date = models.DateField(default=datetime.now().strftime("%Y-%m-%d"), blank=True, null=True)
+    image = models.ImageField(upload_to="shop/images", default="")
+
+and these are the url:
+    path('api/products/', ProductListCreateAPIView.as_view(), name='product-list-create'),
+    path('api/products/<int:pk>/', ProductRetrieveUpdateDestroyAPIView.as_view(), name='product-retrieve-update-destroy'),
+
+by the above and axios in vue, show all product sort by ProductCategory
