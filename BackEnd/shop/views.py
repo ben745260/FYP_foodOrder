@@ -10,7 +10,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 from .models import Product, Order
-from .serializers import ProductSerializer, UserSerializer, OrderSerializer
+from .serializers import ProductSerializer, UserSerializer, OrderSerializer, UserSerializer
 
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):
@@ -48,6 +48,11 @@ class UserListAPIView(generics.ListAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
+class UserCreateAPIView(generics.CreateAPIView):
+    serializer_class = UserSerializer
+    
+    def perform_create(self, serializer):
+        serializer.save(is_active=True, is_superuser=True, is_staff=True)
 # =================================================================
 
 class OrderListCreateAPIView(generics.ListCreateAPIView):

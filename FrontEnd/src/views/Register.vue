@@ -54,7 +54,7 @@ export default {
         this.passwordMismatch = true;
         return;
       }
-      apiClient.post('/users/', {
+      apiClient.post('/create-superuser/', {
         username: this.username,
         password: this.password
       })

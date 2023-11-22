@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
 from django.urls import path, include
-from shop.views import ProductListCreateAPIView, ProductRetrieveUpdateDestroyAPIView, UserRegistrationView, login, OrderListCreateAPIView, OrderRetrieveUpdateDestroyAPIView
+from shop.views import ProductListCreateAPIView, ProductRetrieveUpdateDestroyAPIView, UserRegistrationView, login, OrderListCreateAPIView, OrderRetrieveUpdateDestroyAPIView, UserCreateAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -14,5 +14,5 @@ urlpatterns = [
     path('api/login/', login, name='login'),
     path('api/orders/', OrderListCreateAPIView.as_view(), name='order-list-create'),
     path('api/orders/<int:pk>/', OrderRetrieveUpdateDestroyAPIView.as_view(), name='order-retrieve-update-destroy'),
-
+    path('api/create-superuser/', UserCreateAPIView.as_view(), name='user-create'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
