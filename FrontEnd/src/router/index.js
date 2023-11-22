@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import Admin from '../views/Admin.vue';
-import Test from '../components/Test.vue';
+import Test from '../views/Test.vue';
 import NotFound from '../views/NotFound.vue';
 import store from '@/store';
 import Dashboard from '../components/Dashboard.vue';

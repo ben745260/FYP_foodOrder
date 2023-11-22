@@ -2,6 +2,7 @@ from django.db import models
 from datetime import datetime
 
 class ProductCategory(models.Model):
+    category_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
 
     def __str__(self):
@@ -10,7 +11,7 @@ class ProductCategory(models.Model):
 class Product(models.Model):
     product_id = models.AutoField(primary_key=True)
     product_name = models.CharField(max_length=50)
-    category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
+    category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, null=True)
     price = models.IntegerField(default=0)
     pub_date = models.DateField(default=datetime.now().strftime("%Y-%m-%d"), blank=True, null=True)
     image = models.ImageField(upload_to="shop/images", default="")
