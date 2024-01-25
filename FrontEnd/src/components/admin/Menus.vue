@@ -1,6 +1,13 @@
 <template>
   <div>
-    <h1>All Products</h1>
+    <div class="container-fluid fs-1">
+      All Items
+      <button type="button" class="btn btn-primary float-end align-bottom" data-bs-toggle="modal"
+        data-bs-target="#addProductModal">
+        Add New Item
+      </button>
+    </div>
+
     <div class="menu-container">
       <div v-for="product in products" :key="product.product_id" class="menu-item">
         <img class="menu-image" :src="product.image" alt="Product Image">
@@ -14,11 +21,6 @@
       </div>
     </div>
 
-    <!-- Add New Product Button -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
-      Add New Product
-    </button>
-
     <!-- Add Modal -->
     <div class="modal" id="addProductModal" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
@@ -30,7 +32,7 @@
           <div class="modal-body">
             <form>
               <div class="form-group">
-                <label for="productName">Product Name</label>
+                <label for="productName">Name</label>
                 <input type="text" class="form-control" id="productName" v-model="newProduct.product_name">
               </div>
               <div class="form-group">
@@ -44,13 +46,18 @@
                     categoryName }}</option>
                 </select>
               </div>
+
               <div class="form-group">
-                <label for="productImage">Product Image</label>
-                <input type="file" class="form-control-file" id="productImage" @change="handleImageUpload">
-              </div>
-              <div class="form-group">
-                <label for="productDetail">Product Detail</label>
+                <label for="productDetail">Desciption</label>
                 <textarea class="form-control" id="productDetail" rows="5" v-model="newProduct.product_detail"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="productImage">Image <span class="text-secondary">(Optional)</span></label><br>
+                <input type="file" class="form-control-file" id="productImage" @change="handleImageUpload">
+                <div v-if="newProduct.imageUrl">
+                  <img :src="newProduct.imageUrl" class="uploaded-image" alt="Uploaded Image">
+                </div>
               </div>
             </form>
           </div>
@@ -119,10 +126,17 @@ export default {
     handleImageUpload(event) {
       const file = event.target.files[0];
       this.newProduct.image = file;
+
+      // Read the file and display the image
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.newProduct.imageUrl = e.target.result;
+      };
+      reader.readAsDataURL(file);
     },
     saveNewProduct() {
       // Check if the "Product Detail" and "Product Image" fields are null
-      if (this.newProduct.product_name === null || this.newProduct.price === null|| this.newProduct.category === null) {
+      if (this.newProduct.product_name === null || this.newProduct.price === null || this.newProduct.category === null) {
         // Display an error message or perform any necessary action
         // console.error('Product name and price are required');
         this.$toast.error('Product name, price, or category are required', {
@@ -192,7 +206,16 @@ export default {
 }
 
 .modal-body {
-  max-height: 400px;
+  max-height: 800px;
   overflow-y: auto;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.uploaded-image {
+  max-width: 200px;
+  margin-top: 10px;
 }
 </style>
