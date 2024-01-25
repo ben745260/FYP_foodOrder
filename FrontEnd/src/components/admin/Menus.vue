@@ -8,6 +8,7 @@
           <h3>{{ product.product_name }}</h3>
           <p>Price: $&nbsp;{{ product.price }}</p>
           <p>Category: {{ getCategoryLabel(product.category) }}</p>
+          <p>Detail: {{ product.product_detail }}</p>
           <p>Published Date: {{ product.pub_date }}</p>
         </div>
       </div>
@@ -22,24 +23,40 @@ export default {
   name: 'Menus',
   data() {
     return {
-      products: []
+      products: [],
+      categories: {}
     };
   },
   mounted() {
-    apiClient.get('/products/')
-      .then(response => {
-        this.products = response.data;
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    this.fetchProducts();
+    this.fetchCategories();
   },
   methods: {
+    fetchProducts() {
+      apiClient.get('/products/')
+        .then(response => {
+          this.products = response.data;
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+    fetchCategories() {
+      apiClient.get('/productcategories/')
+        .then(response => {
+          const categories = {};
+          response.data.forEach(category => {
+            categories[category.category_id] = category.name;
+          });
+          this.categories = categories;
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
     getCategoryLabel(category) {
-      if (category =='1') {
-        return 'Fruit';
-      } else if (category == '2') {
-        return 'Drink';
+      if (category in this.categories) {
+        return this.categories[category];
       } else {
         return 'Unknown';
       }

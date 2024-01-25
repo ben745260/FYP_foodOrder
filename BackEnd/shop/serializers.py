@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Product, Order
+from .models import Product, Order, ProductCategory
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -48,3 +48,8 @@ class UserSerializer(serializers.ModelSerializer):
             is_superuser=validated_data['is_superuser']
         )
         return user
+
+class ProductCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductCategory
+        fields = '__all__'

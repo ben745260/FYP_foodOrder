@@ -5,11 +5,12 @@ import Admin from '../views/Admin.vue';
 import Test from '../views/Test.vue';
 import NotFound from '../views/NotFound.vue';
 import store from '@/store';
-import Dashboard from '../components/Dashboard.vue';
-import Orders from '../components/Orders.vue';
-import Tables from '../components/Tables.vue';
-import Menus from '../components/Menus.vue';
-import Settings from '../components/Settings.vue';
+
+import Dashboard from '../components/admin/Dashboard.vue';
+import Orders from '../components/admin/Orders.vue';
+import Tables from '../components/admin/Tables.vue';
+import Menus from '../components/admin/Menus.vue';
+import Settings from '../components/admin/Settings.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
