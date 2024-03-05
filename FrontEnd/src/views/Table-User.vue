@@ -1,6 +1,6 @@
 <template>
-  <v-app>
-    <v-app-bar app color="primary" dark>
+  <v-layout>
+    <v-app-bar color="primary" dark>
       <v-toolbar-title class="text-center">
         <span class="headline fs-2 fw-bolder" @click="$router.push('./tablemenu')">FoodDine</span>
       </v-toolbar-title>
@@ -8,24 +8,16 @@
 
     <v-app-bar color="light" dense>
       <v-tabs v-model="activeTab" background-color="light" color="primary">
-        <v-tab
-          v-for="tab in tabs"
-          :key="tab.name"
-          :to="tab.to"
-          exact
-          :exact-active-class="'active-link'"
-        >
+        <v-tab v-for="tab in tabs" :key="tab.name" :to="tab.to" exact :exact-active-class="'active-link'">
           {{ tab.label }}
         </v-tab>
       </v-tabs>
     </v-app-bar>
 
-    <v-main>
-      <v-container fluid>
-        <router-view></router-view>
-      </v-container>
+    <v-main class="fixed-bottom">
+      <router-view></router-view>
     </v-main>
-  </v-app>
+  </v-layout>
 </template>
 
 <script>
@@ -37,14 +29,17 @@ export default {
       tabs: [
         { name: "tablemenu", label: "Menu", to: "./tablemenu" },
         { name: "checkout", label: "Cart", to: "./checkout" },
-        { name: "vieworder", label: "Order", to: "./vieworder" },
+        { name: "vieworder", label: "Record", to: "./vieworder" },
       ],
     };
   },
 };
 </script>
 
-<style>
+<style scoped>
+.v-main{
+  height: 87vh;
+}
 .header-link {
   font-size: 1.5rem;
   color: #fff;
