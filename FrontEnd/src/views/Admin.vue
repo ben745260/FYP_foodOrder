@@ -6,7 +6,7 @@
           <div class="side-bar d-flex flex-column flex-shrink-0 p-3 text-white bg-dark h-100">
             <router-link to="/admin/dashboard"
               class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-              <h2 class="fw-bold">Food Ordering System</h2>
+              <h2 class="fw-bold">FoodDine System</h2>
             </router-link>
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
@@ -38,14 +38,6 @@
                 <span>{{ username }}</span>
               </a>
               <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                <li>
-                  <router-link to="/admin/settings" class="dropdown-item">
-                    Settings 
-                  </router-link>
-                </li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
                 <li><button class="dropdown-item" @click="logout">Sign out</button></li>
               </ul>
             </div>

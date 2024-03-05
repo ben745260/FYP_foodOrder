@@ -312,8 +312,10 @@ export default {
 
 <style scoped>
 .menu-container {
+  height:90vh;
   display: flex;
   flex-wrap: wrap;
+  overflow-y: scroll;
 }
 
 .menu-item {

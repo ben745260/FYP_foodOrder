@@ -78,7 +78,7 @@ const router = createRouter({
           component: Item,
         },
         {
-          path: 'tabelmenu',
+          path: 'tablemenu',
           component: TabelMenu,
         },
         {

@@ -1,39 +1,46 @@
 <template>
-  <div class="container-fluid d-flex align-items-center justify-content-center h-100">
-    <div class="row justify-content-center">
-      <div class="col-md-12">
+  <v-container fluid class="d-flex align-center justify-center h-100">
+    <v-row justify="center">
+      <v-col cols="12">
         <h1 class="text-center mb-4">Food Ordering System</h1>
-      </div>
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-body">
-            <h2 class="card-title text-center mb-4">Register</h2>
-            <form @submit.prevent="submitForm">
-              <div class="mb-4">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" v-model="username" required>
-              </div>
-              <div class="mb-4">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" v-model="password" required>
-              </div>
-              <div class="mb-4">
-                <label for="confirmPassword" class="form-label">Confirm Password</label>
-                <input type="password" class="form-control" id="confirmPassword" v-model="confirmPassword" required>
-              </div>
-              <button type="submit" class="btn btn-primary w-100 mb-3">Register</button>
+      </v-col>
+      <v-col cols="12">
+        <v-card class="w-50 mx-auto">
+          <v-card-title class="text-center">
+            <h2 class="card-title mb-4">Register</h2>
+          </v-card-title>
+          <v-card-text>
+            <v-form @submit.prevent="submitForm">
+              <v-text-field
+                v-model="username"
+                label="Username"
+                required
+              ></v-text-field>
+              <v-text-field
+                v-model="password"
+                label="Password"
+                type="password"
+                required
+              ></v-text-field>
+              <v-text-field
+                v-model="confirmPassword"
+                label="Confirm Password"
+                type="password"
+                required
+              ></v-text-field>
+              <v-btn type="submit" color="primary" block class="mb-3">Register</v-btn>
               <div class="text-center">
                 <small>Already have an account? <router-link to="/login">Login</router-link></small>
               </div>
               <div v-if="passwordMismatch" class="text-center text-danger mt-2">
                 Passwords do not match.
               </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -45,7 +52,7 @@ export default {
       username: '',
       password: '',
       confirmPassword: '',
-      passwordMismatch: false
+      passwordMismatch: false,
     };
   },
   methods: {
@@ -54,36 +61,40 @@ export default {
         this.passwordMismatch = true;
         return;
       }
-      apiClient.post('/create-superuser/', {
-        username: this.username,
-        password: this.password
-      })
-        .then(response => {
+      apiClient
+        .post('/create-superuser/', {
+          username: this.username,
+          password: this.password,
+        })
+        .then((response) => {
           this.$router.push('/login');
         })
-        .catch(error => {
+        .catch((error) => {
           // Handle registration error
           console.log(error.response.data.message);
           let response = error.response.data;
           for (let property in response) {
             if (response.hasOwnProperty(property)) {
               if (Array.isArray(response[property])) {
-                response[property].forEach(errorMsg => {
+                response[property].forEach((errorMsg) => {
                   console.log(errorMsg);
                   this.$toast.error(errorMsg, {
-                    duration: 6000
+                    duration: 6000,
                   });
                 });
               } else {
                 console.log(response[property]);
                 this.$toast.error(response[property], {
-                  duration: 6000
+                  duration: 6000,
                 });
               }
             }
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
+
+<style scoped>
+</style>

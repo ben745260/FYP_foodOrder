@@ -13,7 +13,7 @@ export default {
     // Add any additional logic or data properties here
     methods: {
         goToMenu() {
-            this.$router.push('/table/tabelmenu');
+            this.$router.push('/table/tablemenu');
         }
     }
 };
