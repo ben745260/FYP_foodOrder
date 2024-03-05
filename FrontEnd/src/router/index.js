@@ -4,6 +4,8 @@ import Register from '../views/Register.vue';
 import Admin from '../views/Admin.vue';
 import Test from '../views/Test.vue';
 import NotFound from '../views/NotFound.vue';
+import Table_User from '../views/Table-User.vue';
+
 import store from '@/store';
 
 import Dashboard from '../components/admin/Dashboard.vue';
@@ -11,6 +13,12 @@ import Orders from '../components/admin/Orders.vue';
 import Tables from '../components/admin/Tables.vue';
 import Menus from '../components/admin/Menus.vue';
 import Settings from '../components/admin/Settings.vue';
+
+import Checkout from '../components/table/Checkout.vue';
+import Item from '../components/table/Item.vue';
+import TabelMenu from '../components/table/TabelMenu.vue';
+import ViewOrder from '../components/table/ViewOrder.vue';
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -56,6 +64,30 @@ const router = createRouter({
       ],
     },
     {
+      path: '/table',
+      name: 'table',
+      meta: { requiresAuth: null }, // Set requiresAuth to null
+      component: Table_User,
+      children: [
+        {
+          path: 'checkout',
+          component: Checkout,
+        },
+        {
+          path: 'item',
+          component: Item,
+        },
+        {
+          path: 'tabelmenu',
+          component: TabelMenu,
+        },
+        {
+          path: 'vieworder',
+          component: ViewOrder,
+        },
+      ]
+    },
+    {
       path: '/test',
       name: 'test',
       component: Test,
@@ -96,9 +128,9 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth && !store.state.isAuthenticated) {
+  if (to.meta.requiresAuth === true && !store.state.isAuthenticated) {
     next('/login');
-  } else if (!to.meta.requiresAuth && store.state.isAuthenticated) {
+  } else if (to.meta.requiresAuth === false && store.state.isAuthenticated) {
     next('/');
   } else {
     next();

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container-fluid fs-1">
+    <div class="container-fluid h1">
       All Items
       <button type="button" class="btn btn-primary float-end align-bottom" data-bs-toggle="modal"
         data-bs-target="#addProductModal">
