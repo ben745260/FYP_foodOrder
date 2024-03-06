@@ -3,7 +3,7 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-    <div style="height: 100vh;">
+    <div style="overflow-x: hidden;">
       <RouterView />
     </div>
 </template>

@@ -14,7 +14,7 @@
       </v-tabs>
     </v-app-bar>
 
-    <v-main class="fixed-bottom">
+    <v-main class="fixed">
       <router-view></router-view>
     </v-main>
   </v-layout>
@@ -37,9 +37,7 @@ export default {
 </script>
 
 <style scoped>
-.v-main{
-  height: 87vh;
-}
+
 .header-link {
   font-size: 1.5rem;
   color: #fff;
@@ -53,5 +51,7 @@ export default {
 
 .v-main {
   padding-top: 20px;
+  height: 87vh;
+  margin-top: 13vh;
 }
 </style>
