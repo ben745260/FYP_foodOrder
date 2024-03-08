@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-container class="pt-1 px-1">
+    <v-container class="pt-1 px-2">
       <v-row>
         <v-col
           v-for="category in categories"
