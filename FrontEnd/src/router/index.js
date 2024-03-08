@@ -14,7 +14,7 @@ import Tables from '../components/admin/Tables.vue';
 import Menus from '../components/admin/Menus.vue';
 import Settings from '../components/admin/Settings.vue';
 
-import Checkout from '../components/table/Checkout.vue';
+import Cart from '../components/table/Cart.vue';
 import Item from '../components/table/Item.vue';
 import TabelMenu from '../components/table/TabelMenu.vue';
 import ViewOrder from '../components/table/ViewOrder.vue';
@@ -70,8 +70,8 @@ const router = createRouter({
       component: Table_User,
       children: [
         {
-          path: 'checkout',
-          component: Checkout,
+          path: 'Cart',
+          component: Cart,
         },
         {
           path: 'item',

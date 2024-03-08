@@ -28,7 +28,7 @@ export default {
       activeTab: "",
       tabs: [
         { name: "tablemenu", label: "Menu", to: "./tablemenu" },
-        { name: "checkout", label: "Cart", to: "./checkout" },
+        { name: "cart", label: "Cart", to: "./cart" },
         { name: "vieworder", label: "Record", to: "./vieworder" },
       ],
     };

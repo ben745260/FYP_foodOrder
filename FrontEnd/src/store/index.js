@@ -26,16 +26,31 @@ export default createStore({
       state.isAuthenticated = false;
     },
     addToCart(state, { productId, quantity }) {
+      console.log("start")
+      console.log(productId)
+      console.log(quantity)
       // Check if the product already exists in the cart
       const existingCartItem = state.cartItems.find(item => item.productId === productId);
-
+      console.log(existingCartItem)
       if (existingCartItem) {
         // If the product already exists, update its quantity
         existingCartItem.quantity += quantity;
       } else {
         // If the product does not exist, add it as a new item
         state.cartItems.push({ productId, quantity });
+
+        console.log(productId + quantity)
+
       }
+      // Save the updated cartItems state in local storage
+      ls.set('cartItems', state.cartItems);
+    },
+    removeItem(state, productId) {
+      state.cartItems = state.cartItems.filter(item => item.productId !== productId);
+      ls.set('cartItems', state.cartItems);
+    },
+    removeAllItems(state) {
+      state.cartItems = [];
     },
   },
   modules: {

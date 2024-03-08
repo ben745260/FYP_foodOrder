@@ -1,53 +1,73 @@
 <template>
-  <v-layout class="rounded rounded-md">
-    <v-app-bar title="Application bar"></v-app-bar>
-
-    <v-navigation-drawer>
-      <v-list>
-        <v-list-item title="Navigation drawer"></v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-
-    <v-main class="d-flex align-center justify-center" style="min-height: 300px;">
-      Main Content
-    </v-main>
-  </v-layout>
+  <v-table>
+    <thead>
+      <tr>
+        <th class="text-left">
+          Name
+        </th>
+        <th class="text-left">
+          Calories
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        v-for="item in desserts"
+        :key="item.name"
+      >
+        <td>{{ item.name }}</td>
+        <td>{{ item.calories }}</td>
+      </tr>
+    </tbody>
+  </v-table>
 </template>
-<script lang="ts" setup>
-import { ref } from 'vue'
-
-const tabPosition = ref('left')
-</script>
-<style>
-.demo-tabs>.el-tabs__content {
-  padding: 32px;
-  color: #6b778c;
-  font-size: 32px;
-  font-weight: 600;
-}
-
-.el-tabs--right .el-tabs__content,
-.el-tabs--left .el-tabs__content {
-  height: 100%;
-}
-</style>
-
-<!-- <template>
-  <div>
-    <h1>Token: {{ token }}</h1>
-  </div>
-</template>
-  
 <script>
-import { mapState } from 'vuex';
-
-export default {
-  computed: {
-    ...mapState(['token']),
-  },
-};
+  export default {
+    data () {
+      return {
+        desserts: [
+          {
+            name: 'Frozen Yogurt',
+            calories: 159,
+          },
+          {
+            name: 'Ice cream sandwich',
+            calories: 237,
+          },
+          {
+            name: 'Eclair',
+            calories: 262,
+          },
+          {
+            name: 'Cupcake',
+            calories: 305,
+          },
+          {
+            name: 'Gingerbread',
+            calories: 356,
+          },
+          {
+            name: 'Jelly bean',
+            calories: 375,
+          },
+          {
+            name: 'Lollipop',
+            calories: 392,
+          },
+          {
+            name: 'Honeycomb',
+            calories: 408,
+          },
+          {
+            name: 'Donut',
+            calories: 452,
+          },
+          {
+            name: 'KitKat',
+            calories: 518,
+          },
+        ],
+      }
+    },
+  }
 </script>
-  
-<style>
-/* Your styles here */
-</style> -->
