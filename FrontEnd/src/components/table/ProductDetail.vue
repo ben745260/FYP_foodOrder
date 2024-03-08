@@ -98,7 +98,7 @@ export default {
     dialogVisible(value) {
       if (value) {
         this.activeTab = "detail"; // Reset active tab to 'detail'
-        this.quantity= 0;
+        this.quantity = 0;
       }
     },
   },
@@ -118,31 +118,13 @@ export default {
       // Check if the selectedProduct and quantity are valid
       if (this.selectedProduct && this.quantity > 0) {
         // Get the existing cart items from the local storage
-        const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-
-        // Check if the selected product is already in the cart
-        const existingCartItem = cartItems.find(
-          (item) => item.productId === this.selectedProduct.product_id
-        );
-
-        if (existingCartItem) {
-          // If the product already exists in the cart, update its quantity
-          existingCartItem.quantity += this.quantity;
-        } else {
-          // If the product does not exist in the cart, add it as a new item
-          cartItems.push({
-            productId: this.selectedProduct.product_id,
-            quantity: this.quantity,
-          });
-          // console.log(productId+quantity);
-        }
-
-        // Save the updated cart items to the local storage
-        localStorage.setItem("cartItems", JSON.stringify(cartItems));
-
-        // Close the dialog
-        this.closeDialog();
+        this.$store.commit("addToCart", {
+          productId: this.selectedProduct.product_id,
+          quantity: this.quantity,
+        });
       }
+      // Close the dialog
+      this.closeDialog();
     },
   },
 };

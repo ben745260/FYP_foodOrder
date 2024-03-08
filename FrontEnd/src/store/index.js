@@ -1,6 +1,5 @@
 import { createStore } from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
-// import Cookies from "js-cookie"
 import SecureLS from "secure-ls";
 var ls = new SecureLS({ isCompression: false });
 
@@ -11,6 +10,7 @@ export default createStore({
       isAdmin: false,
       token: '',
       username: '',
+      cartItems: [], // New cartItems state to store the items in the cart
     };
   },
   mutations: {
@@ -25,26 +25,21 @@ export default createStore({
       state.isAdmin = false;
       state.isAuthenticated = false;
     },
-  },
-  actions: {
+    addToCart(state, { productId, quantity }) {
+      // Check if the product already exists in the cart
+      const existingCartItem = state.cartItems.find(item => item.productId === productId);
+
+      if (existingCartItem) {
+        // If the product already exists, update its quantity
+        existingCartItem.quantity += quantity;
+      } else {
+        // If the product does not exist, add it as a new item
+        state.cartItems.push({ productId, quantity });
+      }
+    },
   },
   modules: {
   },
-  // localStorage
-  // plugins: [createPersistedState()],
-
-  //Cookies
-  // plugins: [
-  //   createPersistedState({
-  //     storage: {
-  //       getItem: (key) => Cookies.get(key),
-  //       setItem: (key, value) =>
-  //         Cookies.set(key, value, { expires: 3, secure: true }),
-  //       removeItem: (key) => Cookies.remove(key)
-  //     }
-  //   })
-  // ]
-
   plugins: [
     createPersistedState({
       storage: {
