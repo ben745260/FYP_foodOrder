@@ -122,7 +122,7 @@ export default {
 
         // Check if the selected product is already in the cart
         const existingCartItem = cartItems.find(
-          (item) => item.productId === this.selectedProduct.id
+          (item) => item.productId === this.selectedProduct.product_id
         );
 
         if (existingCartItem) {
@@ -131,9 +131,10 @@ export default {
         } else {
           // If the product does not exist in the cart, add it as a new item
           cartItems.push({
-            productId: this.selectedProduct.id,
+            productId: this.selectedProduct.product_id,
             quantity: this.quantity,
           });
+          // console.log(productId+quantity);
         }
 
         // Save the updated cart items to the local storage
