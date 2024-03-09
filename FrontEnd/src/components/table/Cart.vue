@@ -35,6 +35,8 @@
               </tr>
             </tbody>
           </v-table>
+          <br>
+          {{ cartItems }}
         </v-card-text>
       </v-card>
     </v-container>

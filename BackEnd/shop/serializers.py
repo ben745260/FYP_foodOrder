@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Product, Order, ProductCategory
+from .models import Product, Order, ProductCategory, OrderItem
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -27,8 +27,20 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
+    order_items = serializers.SerializerMethodField()
+
     class Meta:
         model = Order
+        fields = '__all__'
+
+    def get_order_items(self, obj):
+        order_items = obj.orderitem_set.all()
+        return OrderItemSerializer(order_items, many=True).data
+
+
+class OrderItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderItem
         fields = '__all__'
 
 
@@ -48,6 +60,7 @@ class UserSerializer(serializers.ModelSerializer):
             is_superuser=validated_data['is_superuser']
         )
         return user
+
 
 class ProductCategorySerializer(serializers.ModelSerializer):
     class Meta:

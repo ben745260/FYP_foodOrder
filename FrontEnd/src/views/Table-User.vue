@@ -27,24 +27,26 @@
     <v-main class="fixed">
       <router-view></router-view>
     </v-main>
-    
+
     <v-footer color="primary" app>
-      <v-btn @click="confirmOrder" variant="text" block class="text-center fs-5">Order</v-btn>
+      <v-btn @click="confirmOrder" variant="text" block class="text-center fs-5"
+        >Order</v-btn
+      >
     </v-footer>
 
     <!-- Confirmation Dialog -->
     <v-dialog v-model="confirmDialog" max-width="500px">
-  <v-card>
-    <v-card-title class="headline">Confirm Order</v-card-title>
-    <v-card-text>
-      <span>Are you sure you want to place the order?</span>
-    </v-card-text>
-    <v-card-actions class="justify-end">
-      <v-btn color="primary" text @click="placeOrder">Confirm</v-btn>
-      <v-btn text @click="cancelOrder">Cancel</v-btn>
-    </v-card-actions>
-  </v-card>
-</v-dialog>
+      <v-card>
+        <v-card-title class="headline">Confirm Order</v-card-title>
+        <v-card-text>
+          <span>Are you sure you want to place the order?</span>
+        </v-card-text>
+        <v-card-actions class="justify-end">
+          <v-btn color="primary" text @click="placeOrder">Confirm</v-btn>
+          <v-btn text @click="cancelOrder">Cancel</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-layout>
 </template>
 

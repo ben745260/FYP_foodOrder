@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from rest_framework import generics, status, viewsets
 from rest_framework.decorators import api_view
@@ -9,8 +9,8 @@ from django.contrib.auth import authenticate
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from .models import Product, Order, ProductCategory
-from .serializers import ProductSerializer, UserSerializer, OrderSerializer, UserSerializer, ProductCategorySerializer
+from .models import Product, Order, OrderItem, ProductCategory
+from .serializers import ProductSerializer, UserSerializer, OrderSerializer, ProductCategorySerializer, OrderItemSerializer
 
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):
@@ -64,6 +64,21 @@ class OrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
+class OrderItemAPIView(generics.ListCreateAPIView):
+    serializer_class = OrderItemSerializer
+
+    def get_queryset(self):
+        order = get_object_or_404(Order, pk=self.kwargs['order_id'])
+        return OrderItem.objects.filter(order=order)
+
+    def create(self, request, *args, **kwargs):
+        order = get_object_or_404(Order, id=self.kwargs['order_id'])
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(order=order)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=201, headers=headers)
+    
 # ================================================================
 class ProductCategoryViewSet(viewsets.ModelViewSet):
     queryset = ProductCategory.objects.all()
