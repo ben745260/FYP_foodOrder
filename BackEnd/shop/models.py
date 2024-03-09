@@ -44,18 +44,19 @@ class Product(models.Model):
 
 class Order(models.Model):
     order_id = models.AutoField(primary_key=True)
-    order_user = models.ForeignKey(User, on_delete=models.CASCADE)
-    order_lastEditor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='last_editor')
+    order_table = models.IntegerField()
     order_lastUpdateTime = models.DateField(default=datetime.now().strftime("%Y-%m-%d"), blank=True, null=True)
+    order_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
-        return str(self.order_user.username)
+        return str(self.order_table)
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
+    product_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
         return f"{self.product} - {self.quantity}"

@@ -54,7 +54,7 @@ class UserCreateAPIView(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(is_active=True, is_superuser=True, is_staff=True)
 # =================================================================
-
+        
 class OrderListCreateAPIView(generics.ListCreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
@@ -64,18 +64,19 @@ class OrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
+
 class OrderItemAPIView(generics.ListCreateAPIView):
     serializer_class = OrderItemSerializer
 
     def get_queryset(self):
         order = get_object_or_404(Order, pk=self.kwargs['order_id'])
-        return OrderItem.objects.filter(order=order)
+        return OrderItem.objects.filter(order_id=order)
 
     def create(self, request, *args, **kwargs):
-        order = get_object_or_404(Order, id=self.kwargs['order_id'])
+        order = get_object_or_404(Order, order_id=self.kwargs['order_id'])
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save(order=order)
+        serializer.save(order_id=order)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=201, headers=headers)
     

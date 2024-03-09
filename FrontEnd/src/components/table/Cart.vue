@@ -3,7 +3,7 @@
     <v-container>
       <v-card>
         <v-card-title>
-          My Cart ({{ cartItems.length }} items)
+          My Cart ({{ cartItems.length }} items) <v-spacer></v-spacer> Total: $&nbsp;{{ totalAmount }}
           <v-btn variant="tonal" color="error" @click="confirmClearItems" style="float: right;">Clear all items</v-btn>
         </v-card-title>
         <v-card-text>
@@ -35,8 +35,10 @@
               </tr>
             </tbody>
           </v-table>
-          <br>
+          <!-- <br>
           {{ cartItems }}
+          <hr>
+          {{ totalAmount }} -->
         </v-card-text>
       </v-card>
     </v-container>
@@ -69,6 +71,7 @@ export default {
       categories: [],
       products: [],
       cartItems: this.$store.state.cartItems,
+      totalAmount: this.$store.state.cartTotalAmount,
       confirmDialog: false, // Control variable for the confirmation dialog
     };
   },
@@ -108,6 +111,8 @@ export default {
     removeItem(productId) {
       this.$store.commit("removeItem", productId);
       this.cartItems = this.$store.state.cartItems; // Fetch the updated cart items
+      this.totalAmount = this.$store.state.cartTotalAmount;
+      
     },
     confirmClearItems() {
       this.confirmDialog = true; // Show the confirmation dialog
@@ -115,6 +120,7 @@ export default {
     clearAllItems() {
       this.$store.commit("removeAllItems");
       this.cartItems = this.$store.state.cartItems; // Fetch the updated cart items
+      this.totalAmount = this.$store.state.cartTotalAmount;
       this.confirmDialog = false; // Close the confirmation dialog
     },
   },

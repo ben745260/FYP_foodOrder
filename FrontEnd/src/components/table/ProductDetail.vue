@@ -121,6 +121,7 @@ export default {
         this.$store.commit("addToCart", {
           productId: this.selectedProduct.product_id,
           quantity: this.quantity,
+          price: this.selectedProduct.price,
         });
       }
       // Close the dialog

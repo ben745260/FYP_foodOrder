@@ -51,6 +51,8 @@
 </template>
 
 <script>
+import apiClient from "@/axios/apiClient";
+
 export default {
   name: "Table_User",
   data() {
@@ -62,6 +64,8 @@ export default {
         { name: "vieworder", label: "Record", to: "./vieworder" },
       ],
       confirmDialog: false, // Control variable for the confirmation dialog
+      cartItems: this.$store.state.cartItems,
+      totalAmount: this.$store.state.cartTotalAmount,
     };
   },
   methods: {
@@ -69,9 +73,70 @@ export default {
       this.confirmDialog = true; // Show the confirmation dialog
     },
     placeOrder() {
-      // Perform your order logic here
-      this.confirmDialog = false; // Close the confirmation dialog
-      this.$router.push("/order");
+      // Assuming you have the necessary order and order items data in the component's data
+      const orderData = {
+        order_table: "1", // Replace with the user ID or username
+        order_amount: this.totalAmount, // Replace with the total order amount
+        // Add other required fields for the order
+      };
+
+      const orderItemsData = this.cartItems.map((cartItem) => {
+        return {
+          order_id: "", // Placeholder value, will be updated later
+          product: cartItem.productId, // Replace with the product ID
+          quantity: cartItem.quantity,
+          product_amount: cartItem.product_amount, // Replace with the individual product amount
+        };
+      });
+
+      // Make a POST request to the backend API to place the order
+      apiClient
+        .post("http://127.0.0.1:8000/api/orders/", orderData)
+        .then((orderResponse) => {
+          // Handle the successful order creation response
+          console.log("Order placed successfully:", orderResponse.data);
+          const orderId = orderResponse.data.order_id; // Replace with the correct ID field name
+          console.log(orderId);
+
+          // Update the order_id field in each orderItemData object
+          orderItemsData.forEach((orderItemData) => {
+            orderItemData.order_id = orderId;
+          });
+
+          // Create order items for the order
+          const orderItemsPromises = orderItemsData.map((orderItemData) =>
+            apiClient.post(
+              `http://127.0.0.1:8000/api/orders/${orderId}/items/`,
+              orderItemData
+            )
+          );
+
+          // Wait for all order items to be created
+          Promise.all(orderItemsPromises)
+            .then((orderItemsResponses) => {
+              // Handle the successful order items creation response
+              console.log(
+                "Order items created successfully:",
+                orderItemsResponses.map((res) => res.data)
+              );
+              this.confirmDialog = false; // Close the confirmation dialog
+
+              this.$store.commit("removeAllItems");
+              this.cartItems = this.$store.state.cartItems; // Fetch the updated cart items
+              this.totalAmount = this.$store.state.cartTotalAmount;
+              this.confirmDialog = false; // Close the confirmation dialog
+
+              this.$router.push("./vieworder");
+            })
+            .catch((error) => {
+              // Handle the error case when creating order items
+              console.error("Failed to create order items:", error);
+            });
+        })
+        .catch((error) => {
+          // Handle the error case when creating the order
+          console.error("Failed to place order:", error);
+        });
     },
     cancelOrder() {
       this.confirmDialog = false; // Close the confirmation dialog
