@@ -136,4 +136,7 @@ export default {
   background-color: white;
   border-radius: 0;
 }
+.v-img{
+  max-height: 400px;
+}
 </style>
