@@ -1,36 +1,45 @@
 <template>
   <v-app>
     <v-container>
-      <v-card>
-        <v-card-title> My Order </v-card-title>
+      <v-card
+        v-for="(orderItems, orderId, index) in groupedOrderItems"
+        :key="orderId"
+        class="mb-3"
+      >
+        <v-card-title>
+          Order:&nbsp; {{ index + 1 }}<br>
+          <span
+            >Last Updated: {{ getLastUpdateTime(orderId) }}</span
+          ></v-card-title
+        >
         <v-card-text>
           <v-table>
             <thead>
               <tr>
-                <th class="text-left">Order ID</th>
                 <th class="text-left">Product</th>
                 <th class="text-left">Quantity</th>
                 <th class="text-left">Product Amount</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="orderItem in orderItems" :key="orderItem.product">
-                <td>{{ orderItem.order_id }}</td>
+              <tr v-for="orderItem in orderItems" :key="orderItem.product_id">
                 <td>
                   {{ getProductById(orderItem.product_id)?.product_name }}
                 </td>
                 <td>{{ orderItem.quantity }}</td>
-                <td>{{ orderItem.product_amount }}</td>
+                <td>$&nbsp;{{ orderItem.product_amount }}</td>
               </tr>
             </tbody>
           </v-table>
+          <v-divider></v-divider>
+          <h5 class="float-right">Total: $&nbsp;{{ getAmount(orderId) }}</h5>
         </v-card-text>
       </v-card>
     </v-container>
   </v-app>
 </template>
   
-  <script>
+<script>
 import apiClient from "@/axios/apiClient";
 
 export default {
@@ -38,8 +47,26 @@ export default {
   data() {
     return {
       orderItems: [],
-      products: [], // Add products data
+      products: [],
+      orderLastUpdateTimes: [], // Add order last update times object
+      orderAmount: [],
     };
+  },
+  computed: {
+    groupedOrderItems() {
+      const groupedItems = {};
+
+      // Group the order items by order ID
+      this.orderItems.forEach((orderItem) => {
+        const orderId = orderItem.order_id;
+        if (!groupedItems[orderId]) {
+          groupedItems[orderId] = [];
+        }
+        groupedItems[orderId].push(orderItem);
+      });
+
+      return groupedItems;
+    },
   },
   mounted() {
     this.fetchOrderItems();
@@ -55,7 +82,13 @@ export default {
           const orders = response.data.filter(
             (order) => order.order_table == "1"
           );
-
+          orders.forEach((order) => {
+            const orderId = order.order_id;
+            const lastUpdateTime = order.order_lastUpdateTime;
+            this.orderLastUpdateTimes[orderId] = lastUpdateTime;
+            const amount = order.order_amount;
+            this.orderAmount[orderId] = amount;
+          });
           // Extract the order IDs from the filtered orders
           const orderIds = orders.map((order) => order.order_id);
 
@@ -71,6 +104,11 @@ export default {
                 (response) => response.data
               );
               this.orderItems = orderItems.flat(); // Flatten the nested arrays
+
+              // Save the last update time for each order ID
+              this.orderItems.forEach((orderItem) => {
+                const orderId = orderItem.order_id;
+              });
             })
             .catch((error) => {
               console.error("Failed to fetch order items:", error);
@@ -93,10 +131,24 @@ export default {
     getProductById(productId) {
       return this.products.find((product) => product.product_id === productId);
     },
+    getLastUpdateTime(orderId) {
+      const lastUpdateTime = this.orderLastUpdateTimes[orderId];
+      if (lastUpdateTime) {
+        // Format the last update time as desired (adjust the format according to your needs)
+        return new Date(lastUpdateTime).toLocaleString();
+      }
+      return "Unknown";
+    },
+    getAmount(orderId) {
+      const amount = this.orderAmount[orderId];
+      if (amount) {
+        return amount;
+      }
+      return "Unknown";
+    },
   },
 };
 </script>
-  
-  <style>
-/* Add your table styling here */
+
+<style>
 </style>

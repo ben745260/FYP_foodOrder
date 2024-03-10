@@ -83,9 +83,7 @@ export default {
     },
     placeOrder() {
       // Assuming you have the necessary order and order items data in the component's data
-      console.log("placeOrder");
 
-      console.log(this.totalAmount);
       const orderData = {
         order_table: "1", // Replace with the user ID or username
         order_amount: this.totalAmount, // Replace with the total order amount
@@ -106,9 +104,7 @@ export default {
         .post("/orders/", orderData)
         .then((orderResponse) => {
           // Handle the successful order creation response
-          console.log("Order placed successfully:", orderResponse.data);
           const orderId = orderResponse.data.order_id; // Replace with the correct ID field name
-          console.log(orderId);
 
           // Update the order_id field in each orderItemData object
           orderItemsData.forEach((orderItemData) => {
@@ -124,10 +120,6 @@ export default {
           Promise.all(orderItemsPromises)
             .then((orderItemsResponses) => {
               // Handle the successful order items creation response
-              console.log(
-                "Order items created successfully:",
-                orderItemsResponses.map((res) => res.data)
-              );
               this.confirmDialog = false; // Close the confirmation dialog
 
               this.$store.commit("removeAllItems");
