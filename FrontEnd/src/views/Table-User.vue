@@ -70,6 +70,7 @@ export default {
   },
   methods: {
     confirmOrder() {
+      this.$router.push("./cart");
       this.confirmDialog = true; // Show the confirmation dialog
     },
     placeOrder() {
@@ -83,7 +84,7 @@ export default {
       const orderItemsData = this.cartItems.map((cartItem) => {
         return {
           order_id: "", // Placeholder value, will be updated later
-          product: cartItem.productId, // Replace with the product ID
+          product_id: cartItem.productId, // Replace with the product ID
           quantity: cartItem.quantity,
           product_amount: cartItem.product_amount, // Replace with the individual product amount
         };
@@ -91,7 +92,7 @@ export default {
 
       // Make a POST request to the backend API to place the order
       apiClient
-        .post("http://127.0.0.1:8000/api/orders/", orderData)
+        .post("/orders/", orderData)
         .then((orderResponse) => {
           // Handle the successful order creation response
           console.log("Order placed successfully:", orderResponse.data);
@@ -106,7 +107,7 @@ export default {
           // Create order items for the order
           const orderItemsPromises = orderItemsData.map((orderItemData) =>
             apiClient.post(
-              `http://127.0.0.1:8000/api/orders/${orderId}/items/`,
+              `/orders/${orderId}/items/`,
               orderItemData
             )
           );
