@@ -20,21 +20,21 @@
           <v-tab value="qna">QnA</v-tab>
         </v-tabs>
       </v-card-title>
-      <v-card-text style="overflow-y:scroll;">
+      <v-card-text>
         <v-window v-model="activeTab">
           <v-window-item value="detail">
             <v-img
               :src="selectedProduct ? selectedProduct.image : ''"
-              class="rounded border border-2 border-danger mx-auto w-50"
+              class="rounded border border-2 border-danger"
             />
             <div class="mt-4 fs-5">
-              <strong>Description:</strong>
+              <strong>Desciption:</strong>
               <div
                 v-html="selectedProduct ? selectedProduct.product_detail : ''"
               ></div>
             </div>
           </v-window-item>
-          <v-window-item value="qna">This is the QnA tab.</v-window-item>
+          <v-window-item value="qna"> This is the QnA tab. </v-window-item>
         </v-window>
       </v-card-text>
     </v-card>
