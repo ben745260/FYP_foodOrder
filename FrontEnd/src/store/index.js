@@ -11,7 +11,7 @@ export default createStore({
       token: '',
       username: '',
       cartItems: [], // New cartItems state to store the items in the cart
-      cartTotalAmount: '0',
+      cartTotalAmount: 0,
     };
   },
   mutations: {

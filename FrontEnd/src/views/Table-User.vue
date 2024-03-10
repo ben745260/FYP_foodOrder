@@ -68,6 +68,14 @@ export default {
       totalAmount: this.$store.state.cartTotalAmount,
     };
   },
+  watch: {
+    cartItems: {
+      handler() {
+        this.totalAmount = this.$store.state.cartTotalAmount;
+      },
+      deep: true,
+    },
+  },
   methods: {
     confirmOrder() {
       this.$router.push("./cart");
@@ -75,6 +83,9 @@ export default {
     },
     placeOrder() {
       // Assuming you have the necessary order and order items data in the component's data
+      console.log("placeOrder");
+
+      console.log(this.totalAmount);
       const orderData = {
         order_table: "1", // Replace with the user ID or username
         order_amount: this.totalAmount, // Replace with the total order amount
@@ -106,10 +117,7 @@ export default {
 
           // Create order items for the order
           const orderItemsPromises = orderItemsData.map((orderItemData) =>
-            apiClient.post(
-              `/orders/${orderId}/items/`,
-              orderItemData
-            )
+            apiClient.post(`/orders/${orderId}/items/`, orderItemData)
           );
 
           // Wait for all order items to be created
