@@ -7,9 +7,9 @@
         class="mb-5"
       >
         <v-card-title>
-          Order:&nbsp; {{ index + 1 }}<br>
+          Order:&nbsp; {{ index + 1 }}<br />
           <span
-            >Last Updated: {{ getLastUpdateTime(orderId) }}</span
+            >Last Updated: {{ getLastUpdateDateTime(orderId) }}</span
           ></v-card-title
         >
         <v-card-text>
@@ -24,7 +24,9 @@
             <tbody>
               <tr v-for="orderItem in orderItems" :key="orderItem.product_id">
                 <td>
-                  <strong>{{ getProductById(orderItem.product_id)?.product_name }}</strong>
+                  <strong>{{
+                    getProductById(orderItem.product_id)?.product_name
+                  }}</strong>
                 </td>
                 <td>{{ orderItem.quantity }}</td>
                 <td>$&nbsp;{{ orderItem.product_amount }}</td>
@@ -48,6 +50,7 @@ export default {
     return {
       orderItems: [],
       products: [],
+      orderLastUpdateDates: [], // Add order last update times object
       orderLastUpdateTimes: [], // Add order last update times object
       orderAmount: [],
     };
@@ -84,6 +87,8 @@ export default {
           );
           orders.forEach((order) => {
             const orderId = order.order_id;
+            const lastUpdateDate = order.order_lastUpdateDate;
+            this.orderLastUpdateDates[orderId] = lastUpdateDate;
             const lastUpdateTime = order.order_lastUpdateTime;
             this.orderLastUpdateTimes[orderId] = lastUpdateTime;
             const amount = order.order_amount;
@@ -131,12 +136,14 @@ export default {
     getProductById(productId) {
       return this.products.find((product) => product.product_id === productId);
     },
-    getLastUpdateTime(orderId) {
+    getLastUpdateDateTime(orderId) {
+      const lastUpdateDate = this.orderLastUpdateDates[orderId];
       const lastUpdateTime = this.orderLastUpdateTimes[orderId];
-      if (lastUpdateTime) {
-        // Format the last update time as desired (adjust the format according to your needs)
-        return new Date(lastUpdateTime).toLocaleString();
+
+      if (lastUpdateTime && lastUpdateDate) {
+        return `${lastUpdateTime}, ${lastUpdateDate}`;
       }
+
       return "Unknown";
     },
     getAmount(orderId) {
