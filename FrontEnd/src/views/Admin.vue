@@ -1,8 +1,8 @@
 <template>
   <v-card>
     <v-layout>
-      <v-navigation-drawer class="bg-shades" theme="dark" permanent>
-        <v-list color="transparent">
+      <v-navigation-drawer theme="dark" permanent>
+        <v-list nav>
           <v-list-item><h1>FoodDine<br>System</h1><span class="fw-semibold"> {{ username }}</span></v-list-item>
           <v-divider></v-divider>
           <v-list-item link prepend-icon="mdi-view-dashboard" title="" @click="$router.push('/admin/dashboard')"><span class="fw-semibold">Dashboard</span></v-list-item>

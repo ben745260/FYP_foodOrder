@@ -58,15 +58,21 @@ export default {
   data() {
     return {
       activeTab: "",
-      tabs: [
-        { name: "tablemenu", label: "Menu", to: "./tablemenu" },
-        { name: "cart", label: "Cart", to: "./cart" },
-        { name: "vieworder", label: "Record", to: "./vieworder" },
-      ],
+      tabs: [],
       confirmDialog: false, // Control variable for the confirmation dialog
       cartItems: this.$store.state.cartItems,
       totalAmount: this.$store.state.cartTotalAmount,
+      tableId: this.$route.params.tables,
     };
+  },
+  created() {
+    const tableId = this.$route.params.tables;
+
+    this.tabs = [
+      { name: "tablemenu", label: "Menu", to: `/table/${tableId}/tablemenu` },
+      { name: "cart", label: "Cart", to: `/table/${tableId}/cart` },
+      { name: "vieworder", label: "Record", to: `/table/${tableId}/vieworder` },
+    ];
   },
   watch: {
     cartItems: {
@@ -87,7 +93,7 @@ export default {
       // Assuming you have the necessary order and order items data in the component's data
 
       const orderData = {
-        order_table: "1", // Replace with the user ID or username
+        order_table: this.tableId, // Replace with the user ID or username
         order_amount: this.totalAmount, // Replace with the total order amount
         // Add other required fields for the order
       };

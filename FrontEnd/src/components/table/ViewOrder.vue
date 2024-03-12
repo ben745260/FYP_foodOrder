@@ -53,6 +53,7 @@ export default {
       orderLastUpdateDates: [], // Add order last update times object
       orderLastUpdateTimes: [], // Add order last update times object
       orderAmount: [],
+      tableId: this.$route.params.tables,
     };
   },
   computed: {
@@ -83,7 +84,7 @@ export default {
         .then((response) => {
           // Filter the orders to find the orders with order_table = 1
           const orders = response.data.filter(
-            (order) => order.order_table == "1"
+            (order) => order.order_table == this.tableId
           );
           orders.forEach((order) => {
             const orderId = order.order_id;

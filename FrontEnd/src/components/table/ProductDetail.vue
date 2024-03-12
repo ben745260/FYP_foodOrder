@@ -50,7 +50,7 @@
             @click="decrementQuantity"
             size="small"
           >
-            <v-icon>fa-solid fa-minus</v-icon>
+            <v-icon class="mdi mdi-minus"></v-icon>
           </v-btn>
           <span class="badge text-bg-light fs-6 my-auto mx-2">{{
             quantity
@@ -61,7 +61,7 @@
             @click="incrementQuantity"
             size="small"
           >
-            <v-icon>fa-solid fa-plus</v-icon>
+            <v-icon class="mdi mdi-plus"></v-icon>
           </v-btn>
         </div>
         <v-btn

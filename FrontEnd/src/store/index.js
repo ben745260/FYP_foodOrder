@@ -12,6 +12,7 @@ export default createStore({
       username: '',
       cartItems: [], // New cartItems state to store the items in the cart
       cartTotalAmount: 0,
+      tables: [], // New tables state to store
     };
   },
   mutations: {
@@ -54,6 +55,15 @@ export default createStore({
     removeAllItems(state) {
       state.cartItems = [];
       state.cartTotalAmount= '0';
+    },
+    addTables(state, table_id) {
+      state.tables.push(table_id);
+    },
+    removeTable(state, table_id) {
+      const index = state.tables.indexOf(table_id);
+      if (index !== -1) {
+        state.tables.splice(index, 1);
+      }
     },
   },
   modules: {

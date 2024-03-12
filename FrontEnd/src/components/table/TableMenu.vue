@@ -48,7 +48,7 @@ import apiClient from "@/axios/apiClient";
 import DialogComponent from "./ProductDetail.vue";
 
 export default {
-  name: "TabelMenu",
+  name: "TableMenu",
   components: {
     DialogComponent,
   },

@@ -16,7 +16,7 @@ import Settings from '../components/admin/Settings.vue';
 
 import Cart from '../components/table/Cart.vue';
 import Item from '../components/table/Item.vue';
-import TabelMenu from '../components/table/TabelMenu.vue';
+import TableMenu from '../components/table/TableMenu.vue';
 import ViewOrder from '../components/table/ViewOrder.vue';
 
 
@@ -42,6 +42,11 @@ const router = createRouter({
       meta: { requiresAuth: true },
       children: [
         {
+          path: '',
+          name: 'dashboard',
+          component: Dashboard,
+        },
+        {
           path: 'dashboard',
           component: Dashboard,
         },
@@ -64,11 +69,25 @@ const router = createRouter({
       ],
     },
     {
-      path: '/table',
-      name: 'table',
-      meta: { requiresAuth: null }, // Set requiresAuth to null
+      path: '/table/:tables',
+      meta: { requiresAuth: null },
       component: Table_User,
+      beforeEnter: (to, from, next) => {
+        const tableId = Number(to.params.tables);
+        const tables = store.state.tables;
+    
+        if (tables.includes(tableId)) {
+          next();
+        } else {
+          next('/404'); // Redirect to a 404 page or handle the invalid case as desired
+        }
+      },
       children: [
+        {
+          path: '',
+          name: 'table',
+          component: TableMenu,
+        },
         {
           path: 'Cart',
           component: Cart,
@@ -79,13 +98,13 @@ const router = createRouter({
         },
         {
           path: 'tablemenu',
-          component: TabelMenu,
+          component: TableMenu,
         },
         {
           path: 'vieworder',
           component: ViewOrder,
         },
-      ]
+      ],
     },
     {
       path: '/test',
