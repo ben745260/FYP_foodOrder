@@ -4,7 +4,7 @@
       <v-card
         v-for="(orderItems, orderId, index) in groupedOrderItems"
         :key="orderId"
-        class="mb-3"
+        class="mb-5"
       >
         <v-card-title>
           Order:&nbsp; {{ index + 1 }}<br>
@@ -16,7 +16,7 @@
           <v-table>
             <thead>
               <tr>
-                <th class="text-left">Product</th>
+                <th class="text-left fw-bold">Product</th>
                 <th class="text-left">Quantity</th>
                 <th class="text-left">Product Amount</th>
               </tr>
@@ -24,7 +24,7 @@
             <tbody>
               <tr v-for="orderItem in orderItems" :key="orderItem.product_id">
                 <td>
-                  {{ getProductById(orderItem.product_id)?.product_name }}
+                  <strong>{{ getProductById(orderItem.product_id)?.product_name }}</strong>
                 </td>
                 <td>{{ orderItem.quantity }}</td>
                 <td>$&nbsp;{{ orderItem.product_amount }}</td>
