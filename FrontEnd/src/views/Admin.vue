@@ -17,8 +17,8 @@
           </div>
         </template>
       </v-navigation-drawer>
-      <v-main>
-        <router-view></router-view>
+      <v-main >
+        <router-view class="bg-grey-lighten-3"></router-view>
       </v-main>
     </v-layout>
   </v-card>

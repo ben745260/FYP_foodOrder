@@ -81,6 +81,6 @@ class OrderItemAPIView(generics.ListCreateAPIView):
         return Response(serializer.data, status=201, headers=headers)
     
 # ================================================================
-class ProductCategoryViewSet(viewsets.ModelViewSet):
+class ProductCategoryCreateAPIView(generics.ListCreateAPIView):
     queryset = ProductCategory.objects.all()
     serializer_class = ProductCategorySerializer

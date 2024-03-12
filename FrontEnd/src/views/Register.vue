@@ -1,9 +1,9 @@
 <template>
-  <div class="d-flex align-items-center" style="height: 100vh">
+  <div class="d-flex align-items-center bg-grey-lighten-3" style="height: 100vh">
     <v-container fluid class="">
       <v-row justify="center">
         <v-col cols="12">
-          <h1 class="text-center mb-4">Food Ordering System</h1>
+          <h1 class="text-center mb-4">FoodDine System</h1>
         </v-col>
         <v-col cols="12">
           <v-card class="w-50 mx-auto">

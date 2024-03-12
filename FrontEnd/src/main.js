@@ -6,8 +6,8 @@ import store from './store';
 import ToastPlugin from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-bootstrap.css';
 
-import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
+// import ElementPlus from 'element-plus'
+// import 'element-plus/dist/index.css'
 
 // Vuetify
 import 'vuetify/styles'
@@ -27,7 +27,7 @@ const vuetify = createVuetify({
 const app = createApp(App);
 app.use(vuetify);
 app.use(ToastPlugin);
-app.use(ElementPlus)
+// app.use(ElementPlus);
 app.use(store);
 app.use(router);
 app.mount('#app');
