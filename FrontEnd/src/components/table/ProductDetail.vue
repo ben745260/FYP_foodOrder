@@ -6,12 +6,12 @@
     transition="dialog-bottom-transition"
   >
     <v-toolbar color="grey lighten-3">
-      <v-btn @click="closeDialog"
-        ><i class="fa-solid fa-xmark fa-2xl"></i
-      ></v-btn>
-      <v-toolbar-title class="fs-3">{{
-        selectedProduct ? selectedProduct.product_name : ""
-      }}</v-toolbar-title>
+      <v-btn @click="closeDialog">
+        <i class="fa-solid fa-xmark fa-2xl"></i>
+      </v-btn>
+      <v-toolbar-title class="fs-3">
+        {{ selectedProduct ? selectedProduct.product_name : "" }}
+      </v-toolbar-title>
     </v-toolbar>
     <v-card>
       <v-card-title class="p-0">
@@ -52,9 +52,7 @@
           >
             <v-icon class="mdi mdi-minus"></v-icon>
           </v-btn>
-          <span class="badge text-bg-light fs-6 my-auto mx-2">{{
-            quantity
-          }}</span>
+          <span class="badge text-bg-light fs-6 my-auto mx-2">{{ quantity }}</span>
           <v-btn
             :variant="'elevated'"
             color="primary"
@@ -70,6 +68,7 @@
           @click="addToCart"
           rounded="xl"
           class="ms-1"
+          :disabled="quantity === 0"
         >
           Add to Cart
         </v-btn>
@@ -77,8 +76,8 @@
     </v-footer>
   </v-dialog>
 </template>
-  
-  <script>
+
+<script>
 export default {
   name: "DialogComponent",
   props: {
@@ -130,13 +129,13 @@ export default {
   },
 };
 </script>
-  
-  <style scoped>
+
+<style scoped>
 .square-bg-color {
   background-color: white;
   border-radius: 0;
 }
-.v-img{
+.v-img {
   max-height: 400px;
 }
 </style>
