@@ -59,7 +59,7 @@
                 <label for="productImage">Image<span class="text-secondary">(Optional)</span></label><br>
                 <input type="file" class="form-control" id="productImage" @change="handleImageUpload_add">
                 <div v-if="newProduct.imageUrl">
-                  <img :src="newProduct.imageUrl" class="uploaded-image" alt="Uploaded Image">
+                  <img v-if="newProduct.imageUrl" :src="newProduct.imageUrl" class="uploaded-image" alt="Uploaded Image">
                 </div>
               </div>
             </form>

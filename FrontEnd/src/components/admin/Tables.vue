@@ -38,7 +38,11 @@
       <v-card>
         <v-card-title>Add Table</v-card-title>
         <v-card-text>
-          <v-text-field v-model="newTableId" label="Table ID"></v-text-field>
+          <v-text-field
+            v-model="newTableId"
+            label="Table ID"
+            type="number"
+          ></v-text-field>
         </v-card-text>
         <v-card-actions>
           <v-btn color="primary" @click="addTable">Add</v-btn>
@@ -60,10 +64,10 @@
 
     <v-dialog v-model="isQRCodeDialogVisible" persistent class="w-50">
       <v-card>
-        <v-card-title>Table {{currentTableId}} QR Code</v-card-title>
+        <v-card-title>Table {{ currentTableId }} QR Code</v-card-title>
         <v-card-text>
           <qrcode-vue
-            :value= getViewTableUrl(currentTableId)
+            :value="getViewTableUrl(currentTableId)"
             :size="200"
             level="H"
             class="d-flex mx-auto"
@@ -77,7 +81,7 @@
   </v-app>
 </template>
   
-  <script>
+<script>
 import QrcodeVue from "qrcode.vue";
 
 export default {

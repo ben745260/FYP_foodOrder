@@ -4,12 +4,14 @@
       <v-card-title>
         <span class="fs-1">Menus</span>
         <v-btn color="primary" class="float-right" @click="openAddProductDialog"
-          >Add Product</v-btn>
+          >Add Product</v-btn
+        >
         <v-btn
           color="primary"
           class="float-right me-3"
           @click="openAddCategoryDialog"
-          >Add Category</v-btn>
+          >Add Category</v-btn
+        >
       </v-card-title>
       <v-card-text>
         <v-data-table
@@ -80,36 +82,50 @@
     </v-dialog>
     <v-dialog v-model="addProductDialog" max-width="500px">
       <v-card>
-        <v-card-title> Add Product{{ categories }} </v-card-title>
+        <v-card-title> Add Product </v-card-title>
         <v-card-text>
-          <!-- Add your form fields here -->
-          <v-text-field
-            v-model="productName"
-            label="Product Name"
-          ></v-text-field>
-          <!-- <v-select
-            v-model="productCategory"
-            :items="categories"
-            label="Product Category"
-          ></v-select> -->
-          <v-text-field
-            v-model="productPrice"
-            label="Product Price"
-          ></v-text-field>
-          <v-textarea
-            v-model="productDescription"
-            label="Product Description"
-          ></v-textarea>
-          <v-text-field
-            v-model="productImage"
-            label="Product Image URL"
-          ></v-text-field>
-          <!-- Add more fields as needed -->
+          <v-form enctype="multipart/form-data" @submit.prevent="addProduct">
+            <v-text-field
+              v-model="newProduct.product_name"
+              label="Product Name"
+              :rules="[(v) => !!v || 'This field is required']"
+              required
+            ></v-text-field>
+            <v-select
+              v-model="newProduct.category"
+              :items="rawCategories"
+              item-title="name"
+              item-value="category_id"
+              label="Product Category"
+              :rules="[(v) => !!v || 'This field is required']"
+              required
+            ></v-select>
+            <v-text-field
+              v-model.number="newProduct.price"
+              type="number"
+              label="Product Price"
+              :rules="[(v) => !!v || 'This field is required']"
+              required
+            ></v-text-field>
+            <v-textarea
+              v-model="newProduct.product_detail"
+              label="Product Description (optional)"
+            ></v-textarea>
+            <v-file-input
+              v-model="newProduct.image"
+              accept="image/*"
+              label="Product Image (optional)"
+              outlined
+              prepend-icon="mdi-image"
+              @change="handleImageUpload_add"
+            ></v-file-input>
+            <img v-if="newProduct.imageUrl" :src="newProduct.imageUrl" class="uploaded-image" alt="Uploaded Image">
+            <v-card-actions>
+              <v-btn text @click="closeAddProductDialog">Cancel</v-btn>
+              <v-btn type="submit" color="primary">Add</v-btn>
+            </v-card-actions>
+          </v-form>
         </v-card-text>
-        <v-card-actions>
-          <v-btn text @click="closeAddProductDialog">Cancel</v-btn>
-          <v-btn color="primary" @click="addProduct">Add</v-btn>
-        </v-card-actions>
       </v-card>
     </v-dialog>
   </v-app>
@@ -123,6 +139,7 @@ export default {
     return {
       products: [],
       categories: {},
+      rawCategories: {},
       headers: [
         { title: "Product Name", value: "product_name", sortable: true },
         { title: "Category", value: "category", sortable: true },
@@ -137,12 +154,14 @@ export default {
       addCategoryDialog: false,
       newCategoryName: "",
       addProductDialog: false,
-      addProductName: "",
-      addProductCategory: "",
-      addProductPrice: "",
-      addProductDescription: "",
-      addProductImage: "",
-      categories: [], 
+
+      newProduct: {
+        product_name: "",
+        price: null,
+        category: null,
+        image: null,
+        product_detail: "",
+      },
     };
   },
   mounted() {
@@ -165,6 +184,7 @@ export default {
         .get("/productcategories/")
         .then((response) => {
           const categories = {};
+          this.rawCategories = response.data;
           response.data.forEach((category) => {
             categories[category.category_id] = category.name;
           });
@@ -193,18 +213,18 @@ export default {
     },
     closeAddProductDialog() {
       this.addProductDialog = false;
-      this.addProductName = "";
-      this.addProductCategory = "";
-      this.addProductPrice = "";
-      this.addProductDescription = "";
-      this.addProductImage = "";
+      this.newProduct.product_name = "";
+      this.newProduct.price = null;
+      this.newProduct.category = null;
+      this.newProduct.product_detail = "";
+      this.newProduct.image = null;
     },
     openAddCategoryDialog() {
       this.addCategoryDialog = true;
     },
     closeAddCategoryDialog() {
       this.addCategoryDialog = false;
-      this.newCategoryName ="";
+      this.newCategoryName = "";
     },
     addCategory() {
       if (this.newCategoryName) {
@@ -222,9 +242,45 @@ export default {
           });
       }
     },
+    handleImageUpload_add(event) {
+      const file = event.target.files[0];
+      this.newProduct.image = file;
+
+      // Read the file and display the image
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.newProduct.imageUrl = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+    addProduct() {
+      console.log(this.newProduct)
+      // Create a FormData object to send the product data as multipart/form-data
+      const formData = new FormData();
+      formData.append("product_name", this.newProduct.product_name);
+      formData.append("price", this.newProduct.price);
+      formData.append("category", this.newProduct.category);
+
+      // Check if an image file is selected
+      if (this.newProduct.image) {
+        formData.append("image", this.newProduct.image);
+      }
+
+      formData.append("product_detail", this.newProduct.product_detail);
+
+      apiClient
+        .post("/products/", formData)
+        .then((response) => {
+          this.$toast.success(this.newProduct.product_name + " added", {
+            duration: 6000,
+          });
+          this.fetchProducts();
+          this.closeAddProductDialog();
+        })
+        .catch((error) => {
+          console.error("Error creating product:", error);
+        });
+    },
   },
 };
 </script>
-
-<style scoped>
-</style>
