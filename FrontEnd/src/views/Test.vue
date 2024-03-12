@@ -44,8 +44,13 @@
                 </v-btn>
               </td>
               <td>
-                <v-btn icon small>
+                <v-btn icon small @click="openEditProductDialog(item)">
                   <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+              </td>
+              <td>
+                <v-btn icon small @click="openDeleteProductDialog(item)">
+                  <v-icon> mdi-delete-forever </v-icon>
                 </v-btn>
               </td>
             </tr>
@@ -119,13 +124,76 @@
               prepend-icon="mdi-image"
               @change="handleImageUpload_add"
             ></v-file-input>
-            <img v-if="newProduct.imageUrl" :src="newProduct.imageUrl" class="uploaded-image" alt="Uploaded Image">
+            <v-img v-if="newProduct.imageUrl" :src="newProduct.imageUrl" />
             <v-card-actions>
               <v-btn text @click="closeAddProductDialog">Cancel</v-btn>
               <v-btn type="submit" color="primary">Add</v-btn>
             </v-card-actions>
           </v-form>
         </v-card-text>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="editProductDialog" max-width="500px">
+      <v-card>
+        <v-card-title> Edit Product </v-card-title>
+        <v-card-text>
+          <v-form enctype="multipart/form-data" @submit.prevent="updateProduct">
+            <v-text-field
+              v-model="selectedProduct.product_name"
+              label="Product Name"
+              :rules="[(v) => !!v || 'This field is required']"
+              required
+            ></v-text-field>
+            <v-select
+              v-model="selectedProduct.category"
+              :items="rawCategories"
+              item-title="name"
+              item-value="category_id"
+              label="Product Category"
+              :rules="[(v) => !!v || 'This field is required']"
+              required
+            ></v-select>
+            <v-text-field
+              v-model.number="selectedProduct.price"
+              type="number"
+              label="Product Price"
+              :rules="[(v) => !!v || 'This field is required']"
+              required
+            ></v-text-field>
+            <v-textarea
+              v-model="selectedProduct.product_detail"
+              label="Product Description (optional)"
+            ></v-textarea>
+            <v-file-input
+              v-model="selectedProduct.image_new"
+              accept="image/*"
+              label="Product Image (optional)"
+              outlined
+              prepend-icon="mdi-image"
+              @change="handleImageUpload_edit"
+            ></v-file-input>
+            <v-img v-if="selectedProduct.image" :src="selectedProduct.image" />
+            <v-card-actions>
+              <v-btn text @click="closeEditProductDialog">Cancel</v-btn>
+              <v-btn type="submit" color="primary">Update</v-btn>
+            </v-card-actions>
+          </v-form>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="deleteProductDialog" max-width="500px">
+      <v-card>
+        <v-card-title class="headline"
+          >Delete product:&nbsp;{{ deleteProduct.name }}</v-card-title
+        >
+        <v-card-text>
+          <span>Are you sure you want to delete {{ deleteProduct.name }}?</span>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="error" text @click="deleteProduct">Confirm</v-btn>
+          <v-btn text @click="closeDeleteProductDialog">Cancel</v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </v-app>
@@ -147,20 +215,36 @@ export default {
         { title: "Description", value: "product_detail", sortable: true },
         { title: "Published Date", value: "pub_date", sortable: true },
         { title: "Image", value: "imageUrl", sortable: false },
-        { title: "View Image", value: "viewImage", sortable: false },
+        { title: "Edit", value: "edit", sortable: false },
+        { title: "Delete", value: "delete", sortable: false },
       ],
       imageDialog: false,
       selectedImage: "",
       addCategoryDialog: false,
       newCategoryName: "",
       addProductDialog: false,
-
+      editProductDialog: false,
       newProduct: {
         product_name: "",
         price: null,
         category: null,
         image: null,
         product_detail: "",
+      },
+      selectedProduct: {
+        product_id: null,
+        product_name: "",
+        price: null,
+        category: null,
+        image: null,
+        image_new: null,
+        product_detail: "",
+        imageUrl: "",
+      },
+      deleteProductDialog: false,
+      deleteProduct: {
+        id: "",
+        name: "",
       },
     };
   },
@@ -254,7 +338,7 @@ export default {
       reader.readAsDataURL(file);
     },
     addProduct() {
-      console.log(this.newProduct)
+      console.log(this.newProduct);
       // Create a FormData object to send the product data as multipart/form-data
       const formData = new FormData();
       formData.append("product_name", this.newProduct.product_name);
@@ -279,6 +363,84 @@ export default {
         })
         .catch((error) => {
           console.error("Error creating product:", error);
+        });
+    },
+
+    openEditProductDialog(product) {
+      this.selectedProduct = { ...product };
+      this.editProductDialog = true;
+    },
+    closeEditProductDialog() {
+      this.editProductDialog = false;
+      // this.selectedProduct = null;
+    },
+    updateProduct() {
+      const { product_id } = this.selectedProduct;
+
+      // Create a FormData object to send the updated product data as multipart/form-data
+      const formData = new FormData();
+      formData.append("product_name", this.selectedProduct.product_name);
+      formData.append("price", this.selectedProduct.price);
+      formData.append("category", this.selectedProduct.category);
+
+      // Check if an image file is selected
+      if (this.selectedProduct.image_new) {
+        formData.append("image", this.selectedProduct.image_new);
+      }
+
+      formData.append("product_detail", this.selectedProduct.product_detail);
+
+      apiClient
+        .put(`/products/${product_id}/`, formData)
+        .then((response) => {
+          this.$toast.success(this.selectedProduct.product_name + " updated", {
+            duration: 6000,
+          });
+          this.fetchProducts();
+          this.closeEditProductDialog();
+        })
+        .catch((error) => {
+          console.error("Error updating product:", error);
+        });
+    },
+
+    handleImageUpload_edit(event) {
+      const file = event.target.files[0];
+      this.selectedProduct.image_new = file;
+
+      // Read the file and display the image
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.selectedProduct.imageUrl = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+
+    openDeleteProductDialog(product) {
+      this.deleteProduct.id = product.product_id;
+      this.deleteProduct.name = product.product_name;
+
+      this.deleteProductDialog = true;
+    },
+    closeDeleteProductDialog() {
+      this.deleteProductDialog = false;
+    },
+    deleteProduct_1() {
+      apiClient
+        .delete(`/products/${this.deleteProduct.id}/`)
+        .then(() => {
+          console.log("Product deleted successfully");
+          // Refresh the product list
+          this.fetchProducts();
+          this.$toast.success(this.deleteProduct.name + " deleted", {
+            duration: 6000,
+          });
+          this.deleteProduct.id = "";
+          this.deleteProduct.name = "";
+        })
+        .catch((error) => {
+          console.error(error);
+          // Handle error
         });
     },
   },
