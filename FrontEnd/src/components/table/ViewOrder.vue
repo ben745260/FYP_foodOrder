@@ -17,8 +17,8 @@
             <thead>
               <tr>
                 <th class="text-left fw-bold">Product</th>
-                <th class="text-left">Quantity</th>
-                <th class="text-left">Product Amount</th>
+                <th class="text-right">Quantity</th>
+                <th class="text-right">Product Amount</th>
               </tr>
             </thead>
             <tbody>
@@ -28,8 +28,8 @@
                     getProductById(orderItem.product_id)?.product_name
                   }}</strong>
                 </td>
-                <td>{{ orderItem.quantity }}</td>
-                <td>$&nbsp;{{ orderItem.product_amount }}</td>
+                <td class="text-right">{{ orderItem.quantity }}</td>
+                <td class="text-right">$&nbsp;{{ orderItem.product_amount }}</td>
               </tr>
             </tbody>
           </v-table>
