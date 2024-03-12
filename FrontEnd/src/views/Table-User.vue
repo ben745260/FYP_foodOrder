@@ -29,9 +29,7 @@
     </v-main>
 
     <v-footer color="primary" app>
-      <v-btn @click="confirmOrder" variant="text" block class="text-center fs-5"
-        >Order</v-btn
-      >
+      <v-btn @click="confirmOrder" variant="text" block class="text-center fs-5" :disabled="cartItems.length <= 0">Order</v-btn>
     </v-footer>
 
     <!-- Confirmation Dialog -->
@@ -60,7 +58,7 @@ export default {
       activeTab: "",
       tabs: [],
       confirmDialog: false, // Control variable for the confirmation dialog
-      cartItems: this.$store.state.cartItems,
+      cartItems: [], // Initialize as an empty array
       totalAmount: this.$store.state.cartTotalAmount,
       tableId: this.$route.params.tables,
     };
@@ -73,11 +71,15 @@ export default {
       { name: "cart", label: "Cart", to: `/table/${tableId}/cart` },
       { name: "vieworder", label: "Record", to: `/table/${tableId}/vieworder` },
     ];
+
+    // Retrieve the cart items from the store
+    this.cartItems = this.$store.state.cartItems;
   },
   watch: {
     cartItems: {
       handler() {
         this.totalAmount = this.$store.state.cartTotalAmount;
+        this.cartItems = this.$store.state.cartItems;
       },
       deep: true,
     },
@@ -85,6 +87,9 @@ export default {
   methods: {
     confirmOrder() {
       this.$router.push("./cart");
+      // console.log(this.cartItems);
+      this.cartItems= this.$store.state.cartItems;
+      // console.log(this.cartItems);
       if (this.cartItems.length > 0) {
         this.confirmDialog = true; // Show the confirmation dialog
       }
@@ -100,7 +105,7 @@ export default {
 
       const orderItemsData = this.cartItems.map((cartItem) => {
         return {
-          order_id: "", // Placeholder value, will be updated later
+         order_id: "", // Placeholder value, will be updated later
           product_id: cartItem.productId, // Replace with the product ID
           quantity: cartItem.quantity,
           product_amount: cartItem.product_amount, // Replace with the individual product amount
@@ -133,7 +138,6 @@ export default {
               this.$store.commit("removeAllItems");
               this.cartItems = this.$store.state.cartItems; // Fetch the updated cart items
               this.totalAmount = this.$store.state.cartTotalAmount;
-              this.confirmDialog = false; // Close the confirmation dialog
 
               this.$router.push("./vieworder");
             })
