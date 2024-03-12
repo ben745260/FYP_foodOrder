@@ -141,7 +141,8 @@ export default {
       const lastUpdateTime = this.orderLastUpdateTimes[orderId];
 
       if (lastUpdateTime && lastUpdateDate) {
-        return `${lastUpdateTime}, ${lastUpdateDate}`;
+        const formattedTime = lastUpdateTime.slice(0, 8);
+        return `${formattedTime}, ${lastUpdateDate}`;
       }
 
       return "Unknown";

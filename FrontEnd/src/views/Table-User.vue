@@ -79,7 +79,9 @@ export default {
   methods: {
     confirmOrder() {
       this.$router.push("./cart");
-      this.confirmDialog = true; // Show the confirmation dialog
+      if (this.cartItems.length > 0) {
+        this.confirmDialog = true; // Show the confirmation dialog
+      }
     },
     placeOrder() {
       // Assuming you have the necessary order and order items data in the component's data

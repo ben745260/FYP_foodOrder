@@ -45,8 +45,8 @@ class Product(models.Model):
 class Order(models.Model):
     order_id = models.AutoField(primary_key=True)
     order_table = models.IntegerField()
-    order_lastUpdateDate = models.DateField(default=datetime.now().strftime("%Y-%m-%d"), blank=True, null=True)
-    order_lastUpdateTime = models.TimeField(default=datetime.now().strftime("%H:%M:%S"), blank=True, null=True)
+    order_lastUpdateDate = models.DateField(auto_now=True, blank=True, null=True)
+    order_lastUpdateTime = models.TimeField(auto_now=True, blank=True, null=True)
     order_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
