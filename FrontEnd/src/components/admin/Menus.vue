@@ -17,6 +17,7 @@
         <v-data-table
           :headers="headers"
           :items="products"
+          :loading="loading"
           :items-per-page="10"
           :footer-props="{
             showFirstLastPage: true,
@@ -203,6 +204,7 @@
 import apiClient from "@/axios/apiClient";
 
 export default {
+  name: "Menus",
   data() {
     return {
       products: [],
