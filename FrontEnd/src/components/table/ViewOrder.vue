@@ -29,12 +29,12 @@
                   }}</strong>
                 </td>
                 <td class="text-right">{{ orderItem.quantity }}</td>
-                <td class="text-right">$&nbsp;{{ orderItem.product_amount }}</td>
+                <td class="text-right">${{ orderItem.product_amount }}</td>
               </tr>
             </tbody>
           </v-table>
           <v-divider></v-divider>
-          <h5 class="float-right">Total: $&nbsp;{{ getAmount(orderId) }}</h5>
+          <h5 class="float-right">Total: ${{ getAmount(orderId) }}</h5>
         </v-card-text>
       </v-card>
     </v-container>

@@ -3,7 +3,7 @@
     <v-container>
       <v-card>
         <v-card-title>
-          My Cart ({{ cartItems.length }} items) <v-spacer></v-spacer> Total: $&nbsp;{{ totalAmount }}
+          My Cart ({{ cartItems.length }} items) <v-spacer></v-spacer> Total: ${{ totalAmount }}
           <v-btn variant="tonal" color="error" @click="confirmClearItems" style="float: right;">Clear all items</v-btn>
         </v-card-title>
         <v-card-text>
@@ -23,7 +23,7 @@
                 </td>
                 <td>{{ item.quantity }}</td>
                 <td>
-                  $&nbsp;{{
+                  ${{
                     item.quantity * getProductById(item.productId)?.price
                   }}
                 </td>

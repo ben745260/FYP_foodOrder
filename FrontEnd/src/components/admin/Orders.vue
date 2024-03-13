@@ -15,18 +15,19 @@
               </td>
               <td>{{ item.order_table }}</td>
               <td>
-                <div
+                <v-row
                   v-for="orderItem in item.order_items"
                   :key="orderItem.product_id"
+                  dense
                 >
-                  <strong>{{
-                    getProductById(orderItem.product_id)?.product_name
-                  }}</strong
-                  >&nbsp;
-                  <span class="">x{{ orderItem.quantity }}</span>
-                </div>
+                  <v-col cols="4"
+                    >{{ getProductById(orderItem.product_id)?.product_name }}
+                  </v-col>
+                  <v-col cols="4">x{{ orderItem.quantity }}</v-col>
+                  <v-col cols="4">${{ orderItem.product_amount }}</v-col>
+                </v-row>
               </td>
-              <td>$&nbsp;{{ item.order_amount }}</td>
+              <td>${{ item.order_amount }}</td>
               <td>
                 <v-btn icon small @click="openDeleteOrderDialog(item)">
                   <v-icon>mdi-delete-forever</v-icon>
@@ -79,6 +80,7 @@ export default {
   mounted() {
     this.fetchOrderItems();
     this.fetchProducts();
+    setInterval(this.fetchOrderItems, 5000);
   },
   methods: {
     fetchOrderItems() {
@@ -121,7 +123,7 @@ export default {
           console.log("Order deleted successfully");
           // Refresh the product list
           this.fetchOrderItems();
-          this.$toast.success("Order"+this.deleteOrderID + " deleted", {
+          this.$toast.success("Order" + this.deleteOrderID + " deleted", {
             duration: 6000,
           });
           this.deleteOrderId = "";
