@@ -20,7 +20,7 @@
                   :key="orderItem.product_id"
                   dense
                 >
-                  <v-col cols="4"
+                  <v-col cols="4" class="fw-bold"
                     >{{ getProductById(orderItem.product_id)?.product_name }}
                   </v-col>
                   <v-col cols="4">x{{ orderItem.quantity }}</v-col>
@@ -80,7 +80,7 @@ export default {
   mounted() {
     this.fetchOrderItems();
     this.fetchProducts();
-    setInterval(this.fetchOrderItems, 5000);
+    setInterval(this.fetchOrderItems, 10000);
   },
   methods: {
     fetchOrderItems() {
@@ -89,7 +89,6 @@ export default {
         .get("/orders/")
         .then((response) => {
           this.orders = response.data;
-          console.log(this.orders);
         })
         .catch((error) => {
           console.error("Failed to fetch orders:", error);
