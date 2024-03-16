@@ -17,6 +17,7 @@
         <v-data-table
           :headers="headers"
           :items="products"
+          :loading="loading"
           :items-per-page="10"
           :footer-props="{
             showFirstLastPage: true,
@@ -116,6 +117,17 @@
               v-model="newProduct.product_detail"
               label="Product Description (optional)"
             ></v-textarea>
+            <!-- Generate button -->
+            <v-row justify="center" class="mb-4">
+              <v-btn
+                @click="generateGPTDescription"
+                color="primary"
+                class="mr-4"
+              >
+                <v-icon left>mdi-refresh</v-icon>
+                Generate Description
+              </v-btn>
+            </v-row>
             <v-file-input
               v-model="newProduct.image"
               accept="image/*"
@@ -191,7 +203,7 @@
           <span>Are you sure you want to delete {{ deleteProduct.name }}?</span>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="error" text @click="deleteProduct">Confirm</v-btn>
+          <v-btn color="error" text @click="deleteMenuProduct">Confirm</v-btn>
           <v-btn text @click="closeDeleteProductDialog">Cancel</v-btn>
         </v-card-actions>
       </v-card>
@@ -201,8 +213,10 @@
 
 <script>
 import apiClient from "@/axios/apiClient";
+import { generateDescription } from "@/methods/gpt/generateDescription";
 
 export default {
+  name: "Menus",
   data() {
     return {
       products: [],
@@ -425,7 +439,7 @@ export default {
     closeDeleteProductDialog() {
       this.deleteProductDialog = false;
     },
-    deleteProduct_1() {
+    deleteMenuProduct() {
       apiClient
         .delete(`/products/${this.deleteProduct.id}/`)
         .then(() => {
@@ -437,10 +451,28 @@ export default {
           });
           this.deleteProduct.id = "";
           this.deleteProduct.name = "";
+          this.deleteProductDialog = false;
         })
         .catch((error) => {
           console.error(error);
           // Handle error
+        });
+    },
+    generateGPTDescription() {
+      // Call the generateDescription function here
+      if (!this.newProduct.product_name) {
+        console.log("Product name is required to generate description.");
+        return;
+      }
+      generateDescription(this.newProduct.product_name)
+        .then((description) => {
+          // Do something with the generated description
+          console.log(description);
+          this.newProduct.product_detail = description;
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          // Handle the error appropriately (e.g., show an error message)
         });
     },
   },

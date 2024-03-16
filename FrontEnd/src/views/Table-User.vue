@@ -70,6 +70,7 @@ export default {
       { name: "tablemenu", label: "Menu", to: `/table/${tableId}/tablemenu` },
       { name: "cart", label: "Cart", to: `/table/${tableId}/cart` },
       { name: "vieworder", label: "Record", to: `/table/${tableId}/vieworder` },
+      { name: "recommdenation", label: "Recommdenation", to: `/table/${tableId}/recommdenation` },
     ];
 
     // Retrieve the cart items from the store

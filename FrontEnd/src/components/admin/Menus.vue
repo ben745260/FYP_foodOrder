@@ -17,7 +17,6 @@
         <v-data-table
           :headers="headers"
           :items="products"
-          :loading="loading"
           :items-per-page="10"
           :footer-props="{
             showFirstLastPage: true,
@@ -117,6 +116,17 @@
               v-model="newProduct.product_detail"
               label="Product Description (optional)"
             ></v-textarea>
+            <!-- Generate button -->
+            <v-row justify="center" class="mb-4">
+              <v-btn
+                @click="generateGPTDescription"
+                color="primary"
+                class="mr-4"
+              >
+                <v-icon left>mdi-refresh</v-icon>
+                Generate Description
+              </v-btn>
+            </v-row>
             <v-file-input
               v-model="newProduct.image"
               accept="image/*"
@@ -202,6 +212,7 @@
 
 <script>
 import apiClient from "@/axios/apiClient";
+import { generateDescription } from "@/methods/gpt/generateDescription";
 
 export default {
   name: "Menus",
@@ -444,6 +455,23 @@ export default {
         .catch((error) => {
           console.error(error);
           // Handle error
+        });
+    },
+    generateGPTDescription() {
+      // Call the generateDescription function here
+      if (!this.newProduct.product_name) {
+        console.log("Product name is required to generate description.");
+        return;
+      }
+      generateDescription(this.newProduct.product_name)
+        .then((description) => {
+          // Do something with the generated description
+          console.log(description);
+          this.newProduct.product_detail = description;
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          // Handle the error appropriately (e.g., show an error message)
         });
     },
   },

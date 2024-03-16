@@ -18,6 +18,7 @@ import Cart from '../components/table/Cart.vue';
 import Item from '../components/table/Item.vue';
 import TableMenu from '../components/table/TableMenu.vue';
 import ViewOrder from '../components/table/ViewOrder.vue';
+import Recommdenation from '../components/table/Recommdenation.vue';
 
 
 const router = createRouter({
@@ -103,6 +104,10 @@ const router = createRouter({
         {
           path: 'vieworder',
           component: ViewOrder,
+        },
+        {
+          path: 'recommdenation',
+          component: Recommdenation,
         },
       ],
     },
