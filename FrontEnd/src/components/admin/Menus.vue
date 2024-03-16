@@ -259,6 +259,7 @@ export default {
         id: "",
         name: "",
       },
+      gptBtn:false,
     };
   },
   mounted() {
@@ -307,6 +308,7 @@ export default {
     },
     openAddProductDialog() {
       this.addProductDialog = true;
+      this.gptBtn = true;
     },
     closeAddProductDialog() {
       this.addProductDialog = false;
@@ -315,6 +317,8 @@ export default {
       this.newProduct.category = null;
       this.newProduct.product_detail = "";
       this.newProduct.image = null;
+
+      this.gptBtn = true;
     },
     openAddCategoryDialog() {
       this.addCategoryDialog = true;
@@ -459,18 +463,26 @@ export default {
     },
     generateGPTDescription() {
       // Call the generateDescription function here
-      if (!this.newProduct.product_name) {
-        console.log("Product name is required to generate description.");
+      if (!this.newProduct.product_name|| this.gptBtn == false){
+        this.$toast.error("Product name is required to generate description.", {
+            duration: 6000,
+          });
         return;
       }
       generateDescription(this.newProduct.product_name)
         .then((description) => {
+        this.gptBtn = false;
           // Do something with the generated description
-          console.log(description);
           this.newProduct.product_detail = description;
+          this.$toast.success("Description generated.", {
+            duration: 6000,
+          });
         })
         .catch((error) => {
-          console.error("Error:", error);
+        this.gptBtn = false;
+          this.$toast.error(error, {
+            duration: 6000,
+          });
           // Handle the error appropriately (e.g., show an error message)
         });
     },
