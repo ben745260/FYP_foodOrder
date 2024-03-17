@@ -1,42 +1,43 @@
 <template>
   <v-app>
     <v-container>
-      <v-card
+      <div
         v-for="(orderItems, orderId, index) in groupedOrderItems"
         :key="orderId"
-        class="mb-5"
       >
-        <v-card-title>
-          Order:&nbsp; {{ index + 1 }}<br />
-          <span
-            >Last Updated: {{ getLastUpdateDateTime(orderId) }}</span
-          ></v-card-title
-        >
-        <v-card-text>
-          <v-table>
-            <thead>
-              <tr>
-                <th class="text-left fw-bold">Product</th>
-                <th class="text-right">Quantity</th>
-                <th class="text-right">Product Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="orderItem in orderItems" :key="orderItem.product_id">
-                <td>
-                  <strong>{{
-                    getProductById(orderItem.product_id)?.product_name
-                  }}</strong>
-                </td>
-                <td class="text-right">{{ orderItem.quantity }}</td>
-                <td class="text-right">${{ orderItem.product_amount }}</td>
-              </tr>
-            </tbody>
-          </v-table>
-          <v-divider></v-divider>
-          <h5 class="float-right">Total: ${{ getAmount(orderId) }}</h5>
-        </v-card-text>
-      </v-card>
+        <v-card class="mb-5" v-if="!orderItems.order_checkout">
+          <v-card-title>
+            Order:&nbsp; {{ index + 1 }}<br />
+            <span
+              >Last Updated: {{ getLastUpdateDateTime(orderId) }}</span
+            ></v-card-title
+          >
+          <v-card-text>
+            <v-table>
+              <thead>
+                <tr>
+                  <th class="text-left fw-bold">Product</th>
+                  <th class="text-right">Quantity</th>
+                  <th class="text-right">Product Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="orderItem in orderItems" :key="orderItem.product_id">
+                  <td>
+                    <strong>{{
+                      getProductById(orderItem.product_id)?.product_name
+                    }}</strong>
+                  </td>
+                  <td class="text-right">{{ orderItem.quantity }}</td>
+                  <td class="text-right">${{ orderItem.product_amount }}</td>
+                </tr>
+              </tbody>
+            </v-table>
+            <v-divider></v-divider>
+            <h5 class="float-right">Total: ${{ getAmount(orderId) }}</h5>
+          </v-card-text>
+        </v-card>
+      </div>
     </v-container>
   </v-app>
 </template>

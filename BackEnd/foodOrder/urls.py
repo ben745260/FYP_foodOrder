@@ -11,7 +11,8 @@ from shop.views import (
     OrderRetrieveUpdateDestroyAPIView,
     UserCreateAPIView,
     ProductCategoryCreateAPIView,
-    OrderItemAPIView
+    OrderItemAPIView,
+    order_list_by_table
 )
 
 urlpatterns = [
@@ -23,6 +24,7 @@ urlpatterns = [
     path('api/productcategories/', ProductCategoryCreateAPIView.as_view(), name='product-category-create'),
     path('api/orders/', OrderListCreateAPIView.as_view(), name='order-list-create'),
     path('api/orders/<int:pk>/', OrderRetrieveUpdateDestroyAPIView.as_view(), name='order-retrieve-update-destroy'),
+    path('api/orders/table/<int:order_table>/', order_list_by_table),
     path('api/orders/<int:order_id>/items/', OrderItemAPIView.as_view(), name='order-item-list-create'),
     path('api/create-superuser/', UserCreateAPIView.as_view(), name='user-create'),
     path('api/login/', login, name='login'),

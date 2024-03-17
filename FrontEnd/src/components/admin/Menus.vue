@@ -469,7 +469,9 @@ export default {
           });
         return;
       }
-      generateDescription(this.newProduct.product_name)
+      const systemMsg ='You are a restaurant product Description generator'
+      const userMsg =`Give me the description of`+ this.newProduct.product_name+` in 20 words`
+      generateDescription(this.newProduct.product_name, systemMsg, userMsg)
         .then((description) => {
         this.gptBtn = false;
           // Do something with the generated description

@@ -29,6 +29,12 @@
               </td>
               <td>${{ item.order_amount }}</td>
               <td>
+                <v-icon v-if="item.order_checkout" color="green">
+                  mdi-check-circle
+                </v-icon>
+                <v-icon v-else color="red"> mdi-close-circle </v-icon>
+              </td>
+              <td>
                 <v-btn icon small @click="openDeleteOrderDialog(item)">
                   <v-icon>mdi-delete-forever</v-icon>
                 </v-btn>
@@ -70,6 +76,7 @@ export default {
         { title: "Order Table", value: "order_table", sortable: true },
         { title: "Order Items", value: "order_items", sortable: false },
         { title: "Total Amount", value: "order_amount", sortable: true },
+        { title: "Checkout", value: "checkout", sortable: true },
         { title: "Delete", value: "delete", sortable: false },
       ],
       products: [],

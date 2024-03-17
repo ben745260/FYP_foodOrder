@@ -48,7 +48,8 @@ class Order(models.Model):
     order_lastUpdateDate = models.DateField(auto_now=True, blank=True, null=True)
     order_lastUpdateTime = models.TimeField(auto_now=True, blank=True, null=True)
     order_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-
+    order_checkout = models.BooleanField(default=False)
+    
     def __str__(self):
         return str(self.order_table)
 

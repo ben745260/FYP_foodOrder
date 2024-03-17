@@ -7,10 +7,10 @@ const openai = new OpenAI({
   dangerouslyAllowBrowser: true,
 });
 
-export async function generateDescription(productName) {
+export async function generateDescription(productName,systemMsg,userMsg) {
   const messages = [
-    { role: 'system', content: 'You are a restaurant product Description generator' },
-    { role: 'user', content: `Give me the description of ${productName} in 20 words` },
+    { role: 'system', content: systemMsg},
+    { role: 'user', content: userMsg },
     { role: 'assistant', content: productName },
   ];
 

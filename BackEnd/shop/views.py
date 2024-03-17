@@ -64,7 +64,18 @@ class OrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
-
+@api_view(['GET', 'PUT'])
+def order_list_by_table(request, order_table):
+    if request.method == 'GET':
+        orders = Order.objects.filter(order_table=order_table)
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        orders = Order.objects.filter(order_table=order_table)
+        orders.update(order_checkout=True)
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
+    
 class OrderItemAPIView(generics.ListCreateAPIView):
     serializer_class = OrderItemSerializer
 
