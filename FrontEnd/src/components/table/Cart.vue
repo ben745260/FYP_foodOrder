@@ -46,7 +46,7 @@
 
 
     <!-- Confirmation Dialog -->
-    <v-dialog v-model="confirmDialog" max-width="500px">
+    <v-dialog v-model="confirmDialog" persistent max-width="500px">
       <v-card>
         <v-card-title class="headline">Clear All Items</v-card-title>
         <v-card-text>

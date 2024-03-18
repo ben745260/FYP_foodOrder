@@ -33,7 +33,7 @@
     </v-footer>
 
     <!-- Confirmation Dialog -->
-    <v-dialog v-model="confirmDialog" max-width="500px">
+    <v-dialog v-model="confirmDialog" max-width="500px" persistent>
       <v-card>
         <v-card-title class="headline">Confirm Order</v-card-title>
         <v-card-text>

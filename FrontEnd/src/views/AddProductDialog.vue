@@ -3,7 +3,7 @@
     <v-btn color="primary" class="float-right" @click="openDialog"
       >Add Product</v-btn
     >
-    <v-dialog v-model="dialogVisible" max-width="500px">
+    <v-dialog v-model="dialogVisible" max-width="500px" persistent>
       <v-card>
         <v-card-title> Add Product{{ categories }} </v-card-title>
         <v-card-text>

@@ -39,7 +39,7 @@
     </v-card>
 
     <!-- Dialogs -->
-    <v-dialog v-model="isAddTableDialogVisible" persistent class="w-50">
+    <v-dialog v-model="isAddTableDialogVisible" persistent class="w-50" >
       <v-card>
         <v-card-title>Add Table</v-card-title>
         <v-card-text>

@@ -58,7 +58,7 @@
         </v-data-table>
       </v-card-text>
     </v-card>
-    <v-dialog v-model="imageDialog" max-width="500px">
+    <v-dialog v-model="imageDialog" max-width="500px" persistent>
       <v-card>
         <v-card-title> Image </v-card-title>
         <v-card-text>
@@ -69,7 +69,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="addCategoryDialog" max-width="500px">
+    <v-dialog v-model="addCategoryDialog" max-width="500px" persistent>
       <v-card>
         <v-card-title> Add Category </v-card-title>
         <v-card-text>
@@ -85,7 +85,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="addProductDialog" max-width="500px">
+    <v-dialog v-model="addProductDialog" max-width="500px" persistent>
       <v-card>
         <v-card-title> Add Product </v-card-title>
         <v-card-text>
@@ -144,7 +144,7 @@
         </v-card-text>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="editProductDialog" max-width="500px">
+    <v-dialog v-model="editProductDialog" max-width="500px" persistent>
       <v-card>
         <v-card-title> Edit Product </v-card-title>
         <v-card-text>
@@ -193,7 +193,7 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="deleteProductDialog" max-width="500px">
+    <v-dialog v-model="deleteProductDialog" max-width="500px" persistent>
       <v-card>
         <v-card-title class="headline"
           >Delete product:&nbsp;{{ deleteProduct.name }}</v-card-title

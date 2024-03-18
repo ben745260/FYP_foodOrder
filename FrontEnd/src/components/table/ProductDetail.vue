@@ -4,6 +4,7 @@
     fullscreen
     hide-overlay
     transition="dialog-bottom-transition"
+    persistent
   >
     <v-toolbar color="grey lighten-3">
       <v-btn @click="closeDialog">
