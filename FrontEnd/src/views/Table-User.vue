@@ -71,6 +71,7 @@ export default {
       { name: "cart", label: "Cart", to: `/table/${tableId}/cart` },
       { name: "vieworder", label: "Record", to: `/table/${tableId}/vieworder` },
       { name: "recommdenation", label: "Recommdenation", to: `/table/${tableId}/recommdenation` },
+      { name: "feedback", label: "Feedback", to: `/table/${tableId}/feedback` },
     ];
 
     // Retrieve the cart items from the store

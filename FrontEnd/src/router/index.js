@@ -13,12 +13,14 @@ import Orders from '../components/admin/Orders.vue';
 import Tables from '../components/admin/Tables.vue';
 import Menus from '../components/admin/Menus.vue';
 import Settings from '../components/admin/Settings.vue';
+import UserFeedback from '../components/admin/UserFeedback.vue';
 
 import Cart from '../components/table/Cart.vue';
 import Item from '../components/table/Item.vue';
 import TableMenu from '../components/table/TableMenu.vue';
 import ViewOrder from '../components/table/ViewOrder.vue';
 import Recommdenation from '../components/table/Recommdenation.vue';
+import TableFeedback from '../components/table/TableFeedback.vue';
 
 
 const router = createRouter({
@@ -67,6 +69,10 @@ const router = createRouter({
           path: 'settings',
           component: Settings,
         },
+        {
+          path: 'userFeedback',
+          component: UserFeedback,
+        },
       ],
     },
     {
@@ -108,6 +114,10 @@ const router = createRouter({
         {
           path: 'recommdenation',
           component: Recommdenation,
+        },
+        {
+          path: 'feedback',
+          component: TableFeedback,
         },
       ],
     },

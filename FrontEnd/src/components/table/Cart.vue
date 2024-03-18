@@ -4,7 +4,7 @@
       <v-card>
         <v-card-title>
           My Cart ({{ cartItems.length }} items) <v-spacer></v-spacer> Total: ${{ totalAmount }}
-          <v-btn variant="tonal" color="error" @click="confirmClearItems" style="float: right;">Clear all items</v-btn>
+          <v-btn variant="tonal" color="error" @click="confirmClearItems" style="float: right;" :disabled="cartItems.length <= 0">Clear all items</v-btn>
         </v-card-title>
         <v-card-text>
           <v-table>

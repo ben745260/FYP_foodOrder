@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Product, Order, ProductCategory, OrderItem
+from .models import Product, Order, ProductCategory, OrderItem, UserFeedback
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -65,4 +65,9 @@ class UserSerializer(serializers.ModelSerializer):
 class ProductCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductCategory
+        fields = '__all__'
+
+class UserFeedbackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserFeedback
         fields = '__all__'

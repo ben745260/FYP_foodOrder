@@ -9,8 +9,8 @@ from django.contrib.auth import authenticate
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from .models import Product, Order, OrderItem, ProductCategory
-from .serializers import ProductSerializer, UserSerializer, OrderSerializer, ProductCategorySerializer, OrderItemSerializer
+from .models import Product, Order, OrderItem, ProductCategory, UserFeedback
+from .serializers import ProductSerializer, UserSerializer, OrderSerializer, ProductCategorySerializer, OrderItemSerializer, UserFeedbackSerializer
 
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):
@@ -95,3 +95,8 @@ class OrderItemAPIView(generics.ListCreateAPIView):
 class ProductCategoryCreateAPIView(generics.ListCreateAPIView):
     queryset = ProductCategory.objects.all()
     serializer_class = ProductCategorySerializer
+
+# ================================================================
+class UserFeedbackCreateAPIView(generics.ListCreateAPIView):
+    queryset = UserFeedback.objects.all()
+    serializer_class = UserFeedbackSerializer

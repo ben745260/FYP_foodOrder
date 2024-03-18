@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, ProductCategory, Order, OrderItem
+from .models import Product, ProductCategory, Order, OrderItem, UserFeedback
 
 
 class OrderItemInline(admin.TabularInline):
@@ -23,3 +23,7 @@ class ProductCategoryAdmin(admin.ModelAdmin):
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('order_id', 'order_table', 'order_lastUpdateTime')
     inlines = (OrderItemInline,)
+
+@admin.register(UserFeedback)
+class UserFeedbackAdmin(admin.ModelAdmin):
+    list_display = ('feedback_id','feedback_dateTime')

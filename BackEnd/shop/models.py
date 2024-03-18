@@ -62,3 +62,11 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.product_id} - {self.quantity}"
+    
+class UserFeedback(models.Model):
+    feedback_id = models.AutoField(primary_key=True)
+    feedback_content = models.CharField(max_length=500)
+    feedback_dateTime = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.feedback_id} - {self.feedback_dateTime}"
