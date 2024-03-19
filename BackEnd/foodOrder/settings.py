@@ -138,8 +138,10 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
-    'https://fyp-food-order.vercel.app'
-    '*',
+    'https://fyp-food-order.vercel.app',
+    'https://fyp-food-order-git-main-jellyboys-projects.vercel.app',
+    'https://fyp-food-order-b23osmm5z-jellyboys-projects.vercel.app',
+    
 ]
 # AUTH_USER_MODEL = 'shop.User'
 # Managing media

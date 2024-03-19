@@ -10,6 +10,7 @@
           <v-list-item link prepend-icon="mdi-table" title="" @click="$router.push('/admin/tables')"><span class="fw-semibold" >Tables</span></v-list-item>
           <v-list-item link prepend-icon="mdi-menu" title="" @click="$router.push('/admin/menus')"><span class="fw-semibold">Menus</span></v-list-item>
           <v-list-item link prepend-icon="mdi-comment-quote" title="" @click="$router.push('/admin/userFeedback')"><span class="fw-semibold">User Feedback</span></v-list-item>
+          <v-list-item link prepend-icon="mdi-poll" title="" @click="$router.push('/admin/analysis')"><span class="fw-semibold">Analysis</span></v-list-item>
         </v-list>
 
         <template v-slot:append>

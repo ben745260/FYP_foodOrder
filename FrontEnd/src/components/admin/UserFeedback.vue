@@ -30,8 +30,8 @@
 
     <v-dialog v-model="dialog" max-width="500px" persistent>
       <v-card>
-        <v-card-title class="headline">Feedback Analysis</v-card-title>
-        <v-divider></v-divider>
+        <!-- <v-card-title class="headline">Feedback Analysis</v-card-title>
+        <v-divider></v-divider> -->
         <v-card-text>
           <div v-if="gptSumup !== 'Loading'">
             <div class="mb-4">
@@ -39,7 +39,7 @@
               <p>{{ gptSumup }}</p>
             </div>
             <div>
-              <h3 class="subtitle-1">Feedback Analysis:</h3>
+              <h3 class="subtitle-1">Suggestions:</h3>
               <p>{{ gptResult }}</p>
             </div>
           </div>

@@ -8,6 +8,8 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import Count, Sum, F
+
 
 from .models import Product, Order, OrderItem, ProductCategory, UserFeedback
 from .serializers import ProductSerializer, UserSerializer, OrderSerializer, ProductCategorySerializer, OrderItemSerializer, UserFeedbackSerializer
@@ -100,3 +102,38 @@ class ProductCategoryCreateAPIView(generics.ListCreateAPIView):
 class UserFeedbackCreateAPIView(generics.ListCreateAPIView):
     queryset = UserFeedback.objects.all()
     serializer_class = UserFeedbackSerializer
+# ================================================================
+    
+@api_view(['GET'])
+def sales_analysis(request):
+    # Calculate total sales
+    total_sales = OrderItem.objects.aggregate(total_sales=Sum('product_amount'))['total_sales']
+
+    # Calculate most popular category
+    popular_category = ProductCategory.objects.annotate(num_sales=Count('product__orderitem')).order_by('-num_sales').first()
+
+    # Calculate sales trend
+    sales_trend = Order.objects.values('order_lastUpdateDate').annotate(total_sales=Sum('order_amount')).order_by('order_lastUpdateDate')
+
+    analysis_data = {
+        'totalSales': total_sales,
+        'mostPopularCategory': popular_category.name if popular_category else None,
+        'salesTrend': [{'date': entry['order_lastUpdateDate'], 'sales': entry['total_sales']} for entry in sales_trend]
+    }
+
+    return Response(analysis_data)
+
+@api_view(['GET'])
+def menu_analysis(request):
+    # Calculate most popular menu items
+    popular_items = OrderItem.objects.values('product_id__product_name').annotate(total_quantity=Sum('quantity')).order_by('-total_quantity')[:5]
+
+    # Calculate item profitability
+    item_profitability = Product.objects.annotate(profitability=F('price') * F('orderitem__quantity')).order_by('-profitability')
+
+    analysis_data = {
+        'mostPopularItems': [entry['product_id__product_name'] for entry in popular_items],
+        'itemProfitability': [{'name': item.product_name, 'profitability': item.profitability} for item in item_profitability]
+    }
+
+    return Response(analysis_data)

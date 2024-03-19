@@ -14,6 +14,7 @@ import Tables from '../components/admin/Tables.vue';
 import Menus from '../components/admin/Menus.vue';
 import Settings from '../components/admin/Settings.vue';
 import UserFeedback from '../components/admin/UserFeedback.vue';
+import Analysis from '../components/admin/Analysis.vue';
 
 import Cart from '../components/table/Cart.vue';
 import Item from '../components/table/Item.vue';
@@ -73,6 +74,10 @@ const router = createRouter({
           path: 'userFeedback',
           component: UserFeedback,
         },
+        {
+          path: 'analysis',
+          component: Analysis,
+        }
       ],
     },
     {
@@ -82,7 +87,7 @@ const router = createRouter({
       beforeEnter: (to, from, next) => {
         const tableId = Number(to.params.tables);
         const tables = store.state.tables;
-    
+
         if (tables.includes(tableId)) {
           next();
         } else {
