@@ -45,7 +45,7 @@
       </v-card-text>
     </v-card>
 
-    <v-dialog v-model="deleteOrderDialog" max-width="500px" Persistent>
+    <v-dialog v-model="deleteOrderDialog" max-width="500px" persistent>
       <v-card>
         <v-card-title class="headline"
           >Delete Order:&nbsp;{{ deleteOrderId }}</v-card-title

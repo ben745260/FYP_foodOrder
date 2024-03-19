@@ -23,7 +23,7 @@ export async function generateDescription(productName,systemMsg,userMsg) {
     const response = await openai.chat.completions.create({
       messages: chatMessages,
       model: 'gpt-3.5-turbo',
-      max_tokens: 30,
+      max_tokens: 180,
       temperature: 0.7,
       stop: '\n',
       // assistant_id: 'asst_sCP7Ij19wJkgXya8tCRj4k9V',  // Replace with your actual Assistant ID

@@ -39,7 +39,7 @@
     </v-card>
 
     <!-- Dialogs -->
-    <v-dialog v-model="isAddTableDialogVisible" persistent class="w-50" >
+    <v-dialog v-model="isAddTableDialogVisible" persistent class="w-50">
       <v-card>
         <v-card-title>Add Table</v-card-title>
         <v-card-text>
@@ -184,7 +184,8 @@ export default {
       this.currentTableId = null;
     },
     getViewTableUrl(tableId) {
-      return `http://localhost:5173/table/${tableId}/tablemenu`;
+      const currentDomain = window.location.origin;
+      return `${currentDomain}/table/${tableId}/tablemenu`;
     },
 
     showCheckoutDialog(tableId) {
