@@ -1,8 +1,10 @@
 <template>
     <div v-if="salesData" class="mt-3">
-      <p>Total Sales: ${{ salesData.totalSales }}</p>
-      <p>Sales Trend:</p>
-      <canvas id="salesTrendChart"></canvas>
+      <h3>Total Sales: ${{ salesData.totalSales }}</h3>
+      <h3>Sales Trend:</h3>
+      <div style="height: 500px;">
+        <canvas id="salesTrendChart"></canvas>
+      </div>
     </div>
   </template>
   

@@ -1,9 +1,13 @@
 <template>
   <div v-if="menuData" class="mt-3">
-    <p>Most Popular Menu Items:</p>
-    <canvas id="popularItemsChart"></canvas>
-    <p>Item Profitability:</p>
-    <canvas id="profitabilityChart"></canvas>
+    <h3>Most Popular Menu Items:</h3>
+    <div style="height: 500px">
+      <canvas id="popularItemsChart"></canvas>
+    </div>
+    <h3>Item Profitability:</h3>
+    <div style="height: 500px">
+      <canvas id="profitabilityChart"></canvas>
+    </div>
   </div>
 </template>
   
