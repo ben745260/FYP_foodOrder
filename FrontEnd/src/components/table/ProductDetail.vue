@@ -35,7 +35,28 @@
               ></div>
             </div>
           </v-window-item>
-          <v-window-item value="qna"> This is the QnA tab. </v-window-item>
+          <v-window-item value="qna">
+            <v-btn color="primary" class="w-100" @click="gptTimePOST()"
+              >How long will the dish take?</v-btn
+            >
+            <v-spacer></v-spacer>
+            <v-btn color="primary" class="w-100 mt-3" @click="gptContainPOST()"
+              >What will be contained in the dish?</v-btn
+            >
+            <v-spacer></v-spacer>
+            <v-btn color="primary" class="w-100 mt-3" @click="gptDangerPOST()"
+              >What food hypersensitivity may it include?</v-btn
+            >
+            <v-card
+              class="mt-3"
+              style="height: 500px"
+              color="blue-grey-lighten-4"
+            >
+              <v-card-text class="fs-5">
+                {{ gptAnswer }}
+              </v-card-text>
+            </v-card>
+          </v-window-item>
         </v-window>
       </v-card-text>
     </v-card>
@@ -53,7 +74,9 @@
           >
             <v-icon class="mdi mdi-minus"></v-icon>
           </v-btn>
-          <span class="badge text-bg-light fs-6 my-auto mx-2">{{ quantity }}</span>
+          <span class="badge text-bg-light fs-6 my-auto mx-2">{{
+            quantity
+          }}</span>
           <v-btn
             :variant="'elevated'"
             color="primary"
@@ -79,6 +102,8 @@
 </template>
 
 <script>
+import { generateDescription } from "@/methods/gpt/generateDescription";
+
 export default {
   name: "DialogComponent",
   props: {
@@ -92,6 +117,10 @@ export default {
       dialogVisible: false,
       quantity: 0,
       activeTab: "detail", // Set the default active tab to 'detail'
+      gptAnswer: "",
+      gptTime: null,
+      gptContain: null,
+      gptDanger: null,
     };
   },
   watch: {
@@ -99,12 +128,20 @@ export default {
       if (value) {
         this.activeTab = "detail"; // Reset active tab to 'detail'
         this.quantity = 0;
+        this.gptAnswer = "";
+        this.gptTime = null;
+        this.gptContain = null;
+        this.gptDanger = null;
       }
     },
   },
   methods: {
     closeDialog() {
       this.dialogVisible = false;
+      this.gptAnswer = "";
+      this.gptTime = null;
+      this.gptContain = null;
+      this.gptDanger = null;
     },
     incrementQuantity() {
       this.quantity++;
@@ -126,6 +163,75 @@ export default {
       }
       // Close the dialog
       this.closeDialog();
+    },
+    gptTimePOST() {
+      if (this.gptTime != null) {
+        this.gptAnswer = this.gptTime;
+        return;
+      }
+      let systemMsg =
+        "You are a restaurant staff who repling customer question";
+      let userMsg =
+        `How long will the dish possible take? :` +
+        this.selectedProduct.product_name;
+      let assisMsg = "It might take around ... minutes to prepare the dish";
+      generateDescription(assisMsg, systemMsg, userMsg)
+        .then((description) => {
+          this.gptTime = description;
+          this.gptAnswer = description;
+          // console.log(description);
+        })
+        .catch((error) => {
+          this.$toast.error(error, {
+            duration: 6000,
+          });
+        });
+    },
+    gptContainPOST() {
+      if (this.gptContain != null) {
+        this.gptAnswer = this.gptContain;
+        return;
+      }
+      let systemMsg =
+        "You are a restaurant staff who repling customer question";
+      let userMsg =
+        `What will be contained in the dish? :` +
+        this.selectedProduct.product_name;
+      let assisMsg = "It contains...";
+      generateDescription(assisMsg, systemMsg, userMsg)
+        .then((description) => {
+          this.gptContain = description;
+          this.gptAnswer = description;
+          // console.log(description);
+        })
+        .catch((error) => {
+          this.$toast.error(error, {
+            duration: 6000,
+          });
+        });
+    },
+    gptDangerPOST() {
+      if (this.gptDanger != null) {
+        this.gptAnswer = this.gptDanger;
+        return;
+      }
+      let systemMsg =
+        "You are a restaurant staff who repling customer question";
+      let userMsg =
+        `What general food hypersensitivity may it include? :` +
+        this.selectedProduct.product_name;
+      let assisMsg = "Potential food hypersensitivities may include are: ...";
+      generateDescription(assisMsg, systemMsg, userMsg)
+        .then((description) => {
+          this.gptDanger = description;
+          this.gptAnswer = description;
+          // console.log(description);
+        })
+        .catch((error) => {
+          this.$toast.error(error, {
+            duration: 6000,
+          });
+        });
     },
   },
 };

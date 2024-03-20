@@ -15,6 +15,7 @@ import Menus from '../components/admin/Menus.vue';
 import Settings from '../components/admin/Settings.vue';
 import UserFeedback from '../components/admin/UserFeedback.vue';
 import Analysis from '../components/admin/Analysis.vue';
+import AssistantGPT from '../components/admin/AssistantGPT.vue';
 
 import Cart from '../components/table/Cart.vue';
 import Item from '../components/table/Item.vue';
@@ -77,7 +78,11 @@ const router = createRouter({
         {
           path: 'analysis',
           component: Analysis,
-        }
+        },
+        {
+          path: 'assistantGPT',
+          component: AssistantGPT,
+        },
       ],
     },
     {
