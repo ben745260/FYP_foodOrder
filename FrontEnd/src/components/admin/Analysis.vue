@@ -20,7 +20,7 @@
                   <p>Sales Trend:</p>
                   <ul>
                     <li v-for="entry in salesData.salesTrend" :key="entry.date">
-                      Date: {{ entry.date }}, Sales: {{ entry.sales }}
+                      Month: {{ entry.month }}, Sales: {{ entry.sales }}
                     </li>
                   </ul>
                 </div>

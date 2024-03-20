@@ -9,6 +9,9 @@ from django.contrib.auth import authenticate
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Count, Sum, F
+from django.views.decorators.csrf import csrf_exempt
+from django.db.models.functions import ExtractMonth
+
 
 
 from .models import Product, Order, OrderItem, ProductCategory, UserFeedback
@@ -105,6 +108,7 @@ class UserFeedbackCreateAPIView(generics.ListCreateAPIView):
 # ================================================================
     
 @api_view(['GET'])
+@csrf_exempt
 def sales_analysis(request):
     # Calculate total sales
     total_sales = OrderItem.objects.aggregate(total_sales=Sum('product_amount'))['total_sales']
@@ -113,12 +117,22 @@ def sales_analysis(request):
     popular_category = ProductCategory.objects.annotate(num_sales=Count('product__orderitem')).order_by('-num_sales').first()
 
     # Calculate sales trend
-    sales_trend = Order.objects.values('order_lastUpdateDate').annotate(total_sales=Sum('order_amount')).order_by('order_lastUpdateDate')
+    sales_trend = Order.objects.annotate(month=ExtractMonth('order_lastUpdateDate')).values('month').annotate(total_sales=Sum('order_amount')).order_by('month')
+
+    months_in_order = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    sales_trend_dict = {entry['month']: entry for entry in sales_trend}
+
+    # Fill in missing months with sales = 0
+    for month in months_in_order:
+        if month not in sales_trend_dict:
+            sales_trend_dict[month] = {'month': month, 'total_sales': 0}
+
+    sales_trend = [sales_trend_dict[month] for month in months_in_order]
 
     analysis_data = {
         'totalSales': total_sales,
         'mostPopularCategory': popular_category.name if popular_category else None,
-        'salesTrend': [{'date': entry['order_lastUpdateDate'], 'sales': entry['total_sales']} for entry in sales_trend]
+        'salesTrend': [{'month': entry['month'], 'sales': entry['total_sales']} for entry in sales_trend]
     }
 
     return Response(analysis_data)
