@@ -122,6 +122,7 @@ export default {
       generateDescription(assisMsg, systemMsg, userMsg)
         .then((description) => {
           this.gptSumup = description;
+          // console.log(description);
         })
         .catch((error) => {
           this.$toast.error(error, {
@@ -131,12 +132,13 @@ export default {
       systemMsg =
         "You are a restaurant admin. You are reviewing the customer feedback to see how to improve your business";
       userMsg =
-        `These are the feedback from the customer with comma separated. Dont summarized it and Provide suggestions with numbering (under 100 words):` +
-        this.sumFeedback;
+        `These are the summarized feedback from the customer with comma separated. Dont summarized it and Provide at least 3 suggestions with numbering (under 100 words):` +
+        this.gptSumup;
       assisMsg = "";
       generateDescription(assisMsg, systemMsg, userMsg)
         .then((description) => {
           this.gptResult = description;
+          // console.log(description);
         })
         .catch((error) => {
           this.$toast.error(error, {
