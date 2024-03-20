@@ -140,14 +140,30 @@ def sales_analysis(request):
 @api_view(['GET'])
 def menu_analysis(request):
     # Calculate most popular menu items
-    popular_items = OrderItem.objects.values('product_id__product_name').annotate(total_quantity=Sum('quantity')).order_by('-total_quantity')[:5]
+    popular_items = OrderItem.objects.values('product_id__product_name').annotate(total_quantity=Sum('quantity')).order_by('-total_quantity')[:10]
+
+    popular_item_data = [
+        {
+            'name': entry['product_id__product_name'],
+            'total_sales_quantity': entry['total_quantity']
+        }
+        for entry in popular_items
+    ]
 
     # Calculate item profitability
     item_profitability = Product.objects.annotate(profitability=F('price') * F('orderitem__quantity')).order_by('-profitability')
 
+    profitability_data = [
+        {
+            'name': item.product_name,
+            'profitability': item.profitability
+        }
+        for item in item_profitability
+    ]
+
     analysis_data = {
-        'mostPopularItems': [entry['product_id__product_name'] for entry in popular_items],
-        'itemProfitability': [{'name': item.product_name, 'profitability': item.profitability} for item in item_profitability]
+        'mostPopularItems': popular_item_data[:10],  # Limit to top 10 items
+        'itemProfitability': profitability_data
     }
 
     return Response(analysis_data)
