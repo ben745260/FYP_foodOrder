@@ -54,6 +54,7 @@
           <span>Are you sure you want to delete {{ deleteOrderId }}?</span>
         </v-card-text>
         <v-card-actions>
+          <v-spacer></v-spacer>
           <v-btn color="error" text @click="deleteOrder">Confirm</v-btn>
           <v-btn text @click="closeDeleteOrderDialog">Cancel</v-btn>
         </v-card-actions>

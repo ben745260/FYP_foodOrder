@@ -31,9 +31,10 @@
           ></v-text-field>
           <!-- Add more fields as needed -->
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions
+          ><v-btn color="primary" @click="addProduct">Add</v-btn>
+          <v-spacer></v-spacer>
           <v-btn text @click="closeDialog">Cancel</v-btn>
-          <v-btn color="primary" @click="addProduct">Add</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -52,7 +53,7 @@ export default {
       productPrice: "",
       productDescription: "",
       productImage: "",
-      categories: [], 
+      categories: [],
     };
   },
   methods: {
@@ -65,8 +66,8 @@ export default {
             categories[category.category_id] = category.name;
           });
           this.categories = categories;
-          console.log("here")
-          console.log(this.categories)
+          console.log("here");
+          console.log(this.categories);
         })
         .catch((error) => {
           console.error(error);
@@ -80,7 +81,7 @@ export default {
       this.dialogVisible = false;
       this.resetForm();
     },
-    
+
     resetForm() {
       this.productName = "";
       this.productCategory = "";

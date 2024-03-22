@@ -50,6 +50,7 @@
           ></v-text-field>
         </v-card-text>
         <v-card-actions>
+          <v-spacer></v-spacer>
           <v-btn color="primary" @click="addTable">Add</v-btn>
           <v-btn @click="cancelAddTable">Cancel</v-btn>
         </v-card-actions>
@@ -61,6 +62,7 @@
         <v-card-title>Confirm Removal</v-card-title>
         <v-card-text>Are you sure you want to remove the table?</v-card-text>
         <v-card-actions>
+          <v-spacer></v-spacer>
           <v-btn color="error" @click="removeTable">Remove</v-btn>
           <v-btn @click="cancelRemoveTable">Cancel</v-btn>
         </v-card-actions>
@@ -79,6 +81,7 @@
           />
         </v-card-text>
         <v-card-actions>
+          <v-spacer></v-spacer>
           <v-btn @click="closeQRCodeDialog">Close</v-btn>
         </v-card-actions>
       </v-card>
@@ -94,6 +97,7 @@
           Are you sure you want to checkout Table {{ currentTableId }}?
         </v-card-text>
         <v-card-actions>
+          <v-spacer></v-spacer>
           <v-btn color="primary" @click="confirmCheckout">Confirm</v-btn>
           <v-btn color="" @click="closeCheckoutDialog">Cancel</v-btn>
         </v-card-actions>
@@ -225,7 +229,7 @@ export default {
         .then((response) => {
           // Handle the response if needed
           this.$toast.success(
-            `Table ${this.currentTableId} Order checkout successful`,
+            `Table Order checkout successful`,
             {
               duration: 6000,
             }

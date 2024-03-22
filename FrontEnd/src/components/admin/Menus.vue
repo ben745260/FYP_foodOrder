@@ -65,6 +65,7 @@
           <v-img :src="selectedImage" contain></v-img>
         </v-card-text>
         <v-card-actions>
+          <v-spacer></v-spacer>
           <v-btn text @click="closeImageDialog">Close</v-btn>
         </v-card-actions>
       </v-card>
@@ -137,8 +138,9 @@
             ></v-file-input>
             <v-img v-if="newProduct.imageUrl" :src="newProduct.imageUrl" />
             <v-card-actions>
-              <v-btn text @click="closeAddProductDialog">Cancel</v-btn>
+              <v-spacer></v-spacer>
               <v-btn type="submit" color="primary">Add</v-btn>
+              <v-btn text @click="closeAddProductDialog">Cancel</v-btn>
             </v-card-actions>
           </v-form>
         </v-card-text>
@@ -185,8 +187,9 @@
             ></v-file-input>
             <v-img v-if="selectedProduct.image" :src="selectedProduct.image" />
             <v-card-actions>
+              <v-spacer></v-spacer
+              ><v-btn type="submit" color="primary">Update</v-btn>
               <v-btn text @click="closeEditProductDialog">Cancel</v-btn>
-              <v-btn type="submit" color="primary">Update</v-btn>
             </v-card-actions>
           </v-form>
         </v-card-text>
@@ -202,6 +205,7 @@
           <span>Are you sure you want to delete {{ deleteProduct.name }}?</span>
         </v-card-text>
         <v-card-actions>
+          <v-spacer></v-spacer>
           <v-btn color="error" text @click="deleteMenuProduct">Confirm</v-btn>
           <v-btn text @click="closeDeleteProductDialog">Cancel</v-btn>
         </v-card-actions>
@@ -259,7 +263,7 @@ export default {
         id: "",
         name: "",
       },
-      gptBtn:false,
+      gptBtn: false,
     };
   },
   mounted() {
@@ -463,17 +467,20 @@ export default {
     },
     generateGPTDescription() {
       // Call the generateDescription function here
-      if (!this.newProduct.product_name|| this.gptBtn == false){
+      if (!this.newProduct.product_name || this.gptBtn == false) {
         this.$toast.error("Product name is required to generate description.", {
-            duration: 6000,
-          });
+          duration: 6000,
+        });
         return;
       }
-      const systemMsg ='You are a restaurant product Description generator'
-      const userMsg =`Give me the description of`+ this.newProduct.product_name+` in 20 words`
+      const systemMsg = "You are a restaurant product Description generator";
+      const userMsg =
+        `Give me the description of` +
+        this.newProduct.product_name +
+        ` in 20 words`;
       generateDescription(this.newProduct.product_name, systemMsg, userMsg)
         .then((description) => {
-        this.gptBtn = false;
+          this.gptBtn = false;
           // Do something with the generated description
           this.newProduct.product_detail = description;
           this.$toast.success("Description generated.", {
@@ -481,7 +488,7 @@ export default {
           });
         })
         .catch((error) => {
-        this.gptBtn = false;
+          this.gptBtn = false;
           this.$toast.error(error, {
             duration: 6000,
           });
