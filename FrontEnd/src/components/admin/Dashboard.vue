@@ -6,26 +6,8 @@
       </v-card-title>
       <v-card-text>
         <v-row>
-          <v-col cols="6">
-            <v-card  :variant="'outlined'">
-              <v-card-text class="text-center">
-                <h2>Last Week Orders</h2>
-                <h1>{{ dashboardData.lastweek_orders }}</h1>
-              </v-card-text>
-            </v-card>
-          </v-col>
-          <v-col cols="6">
-            <v-card  :variant="'outlined'">
-              <v-card-text class="text-center">
-                <h2>Last Week Sales</h2>
-                <h1>${{ dashboardData.lastweek_sales }}</h1>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-        <v-row>
           <v-col cols="12">
-            <v-card  :variant="'outlined'">
+            <v-card :variant="'outlined'">
               <v-card-text>
                 <h2>Last Orders</h2>
                 <v-data-table
@@ -56,19 +38,39 @@
           </v-col>
         </v-row>
         <v-row>
+          <v-col cols="6">
+            <v-card :variant="'outlined'">
+              <v-card-text class="text-center">
+                <h2>Last Week Orders</h2>
+                <h1>{{ dashboardData.lastweek_orders }}</h1>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="6">
+            <v-card :variant="'outlined'">
+              <v-card-text class="text-center">
+                <h2>Last Week Sales</h2>
+                <h1>${{ dashboardData.lastweek_sales }}</h1>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+        <v-row>
           <v-col cols="12">
-            <v-card  :variant="'outlined'">
+            <v-card :variant="'outlined'">
               <v-card-text>
-                <h2>Top Selling Products</h2>
+                <h2>Last Week Top Selling Products</h2>
                 <v-data-table
                   :headers="topSellingProductsHeaders"
-                  :items="dashboardData.top_selling_products"
+                  :items="dashboardData.lastweek_top_selling_products"
                   hide-default-footer
                 >
-                  <template v-slot:items="props">
-                    <td>{{ props.item.product_id__product_name }}</td>
-                    <td>{{ props.item.product_id__category__name }}</td>
-                    <td>{{ props.item.total_quantity }}</td>
+                  <template #item="{ item }">
+                    <tr>
+                      <td>{{ item.product_id__product_name }}</td>
+                      <td>{{ item.product_id__category__name }}</td>
+                      <td>{{ item.total_quantity }}</td>
+                    </tr>
                   </template>
                 </v-data-table>
               </v-card-text>
@@ -89,17 +91,17 @@ export default {
     return {
       dashboardData: {},
       topSellingProductsHeaders: [
-        { title: "Product Name", value: "product_id__product_name" },
-        { title: "Product Category", value: "product_id__category__name" },
-        { title: "Quantity", value: "total_quantity" },
+        { title: "Product Name" },
+        { title: "Product Category" },
+        { title: "Quantity" },
       ],
       lastOrdersHeaders: [
-        { title: "Order ID",  },
+        { title: "Order ID" },
         { title: "Table", value: "order_table" },
-        { title: "Date"},
-        { title: "Time"},
+        { title: "Date" },
+        { title: "Time" },
         { title: "Amount" },
-        { title: "Checkout"},
+        { title: "Checkout" },
       ],
     };
   },

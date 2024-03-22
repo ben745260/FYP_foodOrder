@@ -182,7 +182,8 @@ def dashboardAPI(request):
     lastweek_orders = Order.objects.filter(order_lastUpdateDate__range=(last_week_start, last_week_end)).count()
     lastweek_sales = Order.objects.filter(order_lastUpdateDate__range=(last_week_start, last_week_end)).aggregate(total_sales=Sum('order_amount'))['total_sales'] or 0
 
-    top_selling_products = OrderItem.objects.values('product_id__product_name', 'product_id__category__name').annotate(total_quantity=Count('quantity')).order_by('-total_quantity')[:5]
+    # Retrieve top selling products from the last week
+    lastweek_top_selling_products = OrderItem.objects.filter(order_id__order_lastUpdateDate__range=(last_week_start, last_week_end)).values('product_id__product_name', 'product_id__category__name').annotate(total_quantity=Sum('quantity')).order_by('-total_quantity')[:5]
 
     last_orders = Order.objects.order_by('-order_lastUpdateDate', '-order_lastUpdateTime')[:5]
     last_orders_data = [
@@ -201,7 +202,7 @@ def dashboardAPI(request):
     data = {
         'lastweek_orders': lastweek_orders,
         'lastweek_sales': lastweek_sales,
-        'top_selling_products': list(top_selling_products),
+        'lastweek_top_selling_products': list(lastweek_top_selling_products),
         'last_orders': last_orders_data
     }
 
