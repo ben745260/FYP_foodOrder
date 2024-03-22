@@ -67,8 +67,8 @@ export default {
         .then((response) => {
           const token = response.data.auth_token;
           this.$store.commit("setToken", { token, username: this.username });
-          // this.$router.push("/admin/dashboard");
-          this.$router.push("/admin/orders");
+          this.$router.push("/admin/dashboard");
+          // this.$router.push("/admin/orders");
         })
         .catch((error) => {
           // Handle login error

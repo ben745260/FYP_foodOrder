@@ -8,9 +8,9 @@
             <span class="fw-semibold">{{ username }}</span>
           </v-list-item>
           <v-divider></v-divider>
-          <!-- <v-list-item link prepend-icon="mdi-view-dashboard" title="" :to="{ path: '/admin/dashboard' }" :class="{ active: isActive('/admin/dashboard') }">
+          <v-list-item link prepend-icon="mdi-view-dashboard" title="" :to="{ path: '/admin/dashboard' }" :class="{ active: isActive('/admin/dashboard') }">
             <span class="fw-semibold">Dashboard</span>
-          </v-list-item> -->
+          </v-list-item>
           <v-list-item link prepend-icon="mdi-order-alphabetical-ascending" :to="{ path: '/admin/orders' }" :class="{ active: isActive('/admin/orders') }">
             <span class="fw-semibold">Orders</span>
           </v-list-item>

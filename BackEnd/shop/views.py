@@ -12,6 +12,8 @@ from django.db.models import Count, Sum, F
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models.functions import ExtractMonth
 
+from datetime import datetime, timedelta
+
 
 
 from .models import Product, Order, OrderItem, ProductCategory, UserFeedback
@@ -167,3 +169,40 @@ def menu_analysis(request):
     }
 
     return Response(analysis_data)
+
+
+#================================================================
+@api_view(['GET'])
+def dashboardAPI(request):
+    # Calculate date range for the last week
+    last_week_start = datetime.now().date() - timedelta(days=7)
+    last_week_end = datetime.now().date()
+
+    # Retrieve data from models
+    lastweek_orders = Order.objects.filter(order_lastUpdateDate__range=(last_week_start, last_week_end)).count()
+    lastweek_sales = Order.objects.filter(order_lastUpdateDate__range=(last_week_start, last_week_end)).aggregate(total_sales=Sum('order_amount'))['total_sales'] or 0
+
+    top_selling_products = OrderItem.objects.values('product_id__product_name', 'product_id__category__name').annotate(total_quantity=Count('quantity')).order_by('-total_quantity')[:5]
+
+    last_orders = Order.objects.order_by('-order_lastUpdateDate', '-order_lastUpdateTime')[:5]
+    last_orders_data = [
+        {
+            'order_id': order.order_id,
+            'order_table': order.order_table,
+            'order_lastUpdateDate': order.order_lastUpdateDate,
+            'order_lastUpdateTime': order.order_lastUpdateTime,
+            'order_amount': str(order.order_amount),
+            'order_checkout': order.order_checkout
+        }
+        for order in last_orders
+    ]
+
+    # Prepare the JSON response
+    data = {
+        'lastweek_orders': lastweek_orders,
+        'lastweek_sales': lastweek_sales,
+        'top_selling_products': list(top_selling_products),
+        'last_orders': last_orders_data
+    }
+
+    return Response(data)

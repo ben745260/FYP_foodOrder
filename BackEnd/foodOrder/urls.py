@@ -16,6 +16,7 @@ from shop.views import (
     UserFeedbackCreateAPIView,
     sales_analysis,
     menu_analysis,
+    dashboardAPI,
 )
 
 urlpatterns = [
@@ -36,6 +37,8 @@ urlpatterns = [
 
     path('api/sales-analysis/', sales_analysis, name='sales-analysis'),
     path('api/menu-analysis/', menu_analysis, name='menu-analysis'),
+
+    path('api/dashboard/', dashboardAPI, name='dashboardAPI'),
     
     path('api/create-superuser/', UserCreateAPIView.as_view(), name='user-create'),
     path('api/login/', login, name='login'),
