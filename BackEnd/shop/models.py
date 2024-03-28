@@ -30,7 +30,7 @@ class Product(models.Model):
     product_detail = models.CharField(max_length=500, default="", null=True, blank=True)
     pub_date = models.DateField(default=datetime.now().strftime("%Y-%m-%d"), blank=True, null=True)
     image = models.ImageField(upload_to=get_image_path, null=True, blank=True)
-
+    status = models.BooleanField(default=True)
     def __str__(self):
         return self.product_name
 

@@ -88,7 +88,7 @@ export default {
   mounted() {
     this.fetchOrderItems();
     this.fetchProducts();
-    setInterval(this.fetchOrderItems, 10000);
+    setInterval(this.fetchOrderItems, 5000);
   },
   methods: {
     fetchOrderItems() {

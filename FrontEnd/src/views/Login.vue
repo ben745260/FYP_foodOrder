@@ -65,9 +65,13 @@ export default {
           password: this.password,
         })
         .then((response) => {
+          this.$toast.success("Welcome, "+this.username, {
+            duration: 6000,
+          });
           const token = response.data.auth_token;
           this.$store.commit("setToken", { token, username: this.username });
           this.$router.push("/admin/dashboard");
+
           // this.$router.push("/admin/orders");
         })
         .catch((error) => {

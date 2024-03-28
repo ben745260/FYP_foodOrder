@@ -44,6 +44,16 @@
                 </v-btn>
               </td>
               <td>
+                <span>{{ item.status ? "Available" : "Unavailable" }}</span>
+                <v-switch
+                  v-model="item.status"
+                  color="primary"
+                  :input-value="item.status"
+                  @change="updateStatus(item)"
+                >
+                </v-switch>
+              </td>
+              <td>
                 <v-btn icon small @click="openEditProductDialog(item)">
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
@@ -232,6 +242,7 @@ export default {
         { title: "Description", value: "product_detail", sortable: true },
         { title: "Published Date", value: "pub_date", sortable: true },
         { title: "Image", value: "imageUrl", sortable: false },
+        { title: "Status", value: "status", sortable: false },
         { title: "Edit", value: "edit", sortable: false },
         { title: "Delete", value: "delete", sortable: false },
       ],
@@ -493,6 +504,57 @@ export default {
             duration: 6000,
           });
           // Handle the error appropriately (e.g., show an error message)
+        });
+    },
+    updateStatus(product) {
+      this.selectedProduct = { ...product };
+      let { product_id } = this.selectedProduct;
+      let formData = new FormData();
+
+      // Convert the "status" value to a string
+      const statusValue = this.selectedProduct.status ? "true" : "false";
+
+      // Append the updated "status" value to formData
+      formData.append("status", statusValue);
+      formData.append("product_name", this.selectedProduct.product_name);
+      formData.append("price", this.selectedProduct.price);
+      formData.append("category", this.selectedProduct.category);
+
+      // Check if an image file is selected
+      if (this.selectedProduct.image_new) {
+        formData.append("image", this.selectedProduct.image_new);
+      }
+
+      formData.append("product_detail", this.selectedProduct.product_detail);
+      console.log(formData);
+      apiClient
+        .put(`/products/${product_id}/`, formData)
+        .then((response) => {
+          this.$toast.success(
+            this.selectedProduct.product_name + " status updated",
+            {
+              duration: 6000,
+            }
+          );
+          this.fetchProducts();
+        })
+        .catch((error) => {
+          let response = error.response.data;
+          for (let property in response) {
+            if (response.hasOwnProperty(property)) {
+              if (Array.isArray(response[property])) {
+                response[property].forEach((errorMsg) => {
+                  this.$toast.error(errorMsg, {
+                    duration: 6000,
+                  });
+                });
+              } else {
+                this.$toast.error(response[property], {
+                  duration: 6000,
+                });
+              }
+            }
+          }
         });
     },
   },

@@ -11,33 +11,38 @@
           <v-card :id="`card-${category.category_id}`" variant="flat">
             <v-card-title class="fs-4">{{ category.name }}</v-card-title>
             <v-card-text>
-              <v-row
+              <div
                 v-for="product in getProductsByCategory(category.category_id)"
                 @click="openDialog(product)"
                 :key="product.product_id"
               >
-                <v-col cols="4">
-                  <v-img
-                    :src="product.image"
-                    :height="100"
-                    class="rounded border border-primary"
-                    alt="Product Image"
-                  ></v-img>
-                </v-col>
-                <v-col cols="8">
-                  <h3>{{ product.product_name }}</h3>
-                  <h3 class="text-primary mt-5 pt-3">
-                    ${{ product.price }}
-                    <v-btn class="float-end fa-solid fa-plus"></v-btn>
-                  </h3>
-                </v-col>
-              </v-row>
+                <v-row v-if="product.status">
+                  <v-col cols="4">
+                    <v-img
+                      :src="product.image"
+                      :height="100"
+                      class="rounded border border-primary"
+                      alt="Product Image"
+                    ></v-img>
+                  </v-col>
+                  <v-col cols="8">
+                    <h3>{{ product.product_name }}</h3>
+                    <h3 class="text-primary mt-5 pt-3">
+                      ${{ product.price }}
+                      <v-btn class="float-end fa-solid fa-plus"></v-btn>
+                    </h3>
+                  </v-col>
+                </v-row>
+              </div>
             </v-card-text>
           </v-card>
         </v-col>
       </v-row>
     </v-container>
-    <dialog-component :selectedProduct="selectedProduct" ref="dialog"></dialog-component>
+    <dialog-component
+      :selectedProduct="selectedProduct"
+      ref="dialog"
+    ></dialog-component>
     <!-- </v-col>
     </v-row> -->
   </v-app>
@@ -63,6 +68,7 @@ export default {
   mounted() {
     this.fetchCategories();
     this.fetchProducts();
+    setInterval(this.fetchProducts, 5000);
   },
   methods: {
     fetchCategories() {

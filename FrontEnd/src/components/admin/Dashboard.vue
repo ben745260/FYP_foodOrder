@@ -107,7 +107,7 @@ export default {
   },
   mounted() {
     this.fetchDashboardData();
-    setInterval(this.fetchDashboardData, 10000);
+    setInterval(this.fetchDashboardData, 5000);
   },
   methods: {
     fetchDashboardData() {

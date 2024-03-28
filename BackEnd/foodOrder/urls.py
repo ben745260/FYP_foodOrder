@@ -14,6 +14,7 @@ from shop.views import (
     OrderItemAPIView,
     order_list_by_table,
     UserFeedbackCreateAPIView,
+    UserFeedbackRetrieveUpdateDestroyAPIView,
     sales_analysis,
     menu_analysis,
     dashboardAPI,
@@ -34,6 +35,7 @@ urlpatterns = [
     path('api/orders/<int:order_id>/items/', OrderItemAPIView.as_view(), name='order-item-list-create'),
 
     path('api/feedbacks/', UserFeedbackCreateAPIView.as_view(), name='user-feedback-create'),
+    path('api/feedbacks/<int:pk>/', UserFeedbackRetrieveUpdateDestroyAPIView.as_view(), name='user-feedback-retrieve-update-destroy'),
 
     path('api/sales-analysis/', sales_analysis, name='sales-analysis'),
     path('api/menu-analysis/', menu_analysis, name='menu-analysis'),

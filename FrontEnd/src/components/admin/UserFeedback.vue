@@ -22,6 +22,11 @@
               <td>{{ item.feedback_id }}</td>
               <td>{{ formatDate(item.feedback_dateTime) }}</td>
               <td>{{ item.feedback_content }}</td>
+              <td>
+                <v-btn icon small @click="openDeleteFeedbackDialog(item)">
+                  <v-icon>mdi-delete-forever</v-icon>
+                </v-btn>
+              </td>
             </tr>
           </template>
         </v-data-table>
@@ -59,6 +64,22 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="deleteFeedbackDialog" max-width="500px" persistent>
+      <v-card>
+        <v-card-title class="headline"
+          >Delete :&nbsp;{{ deleteFeedbackId }}</v-card-title
+        >
+        <v-card-text>
+          <span>Are you sure you want to delete {{ deleteFeedbackId }}?</span>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="error" text @click="deleteFeedback">Confirm</v-btn>
+          <v-btn text @click="closeDeleteFeedbackDialog">Cancel</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 
@@ -80,16 +101,20 @@ export default {
           sortable: true,
         },
         { title: "Content", align: "start", value: "content" },
+        { title: "Delete", value: "delete", sortable: false },
       ],
       feedbacks: [],
       sumFeedback: "",
       gptSumup: "Loading",
       gptResult: null,
       dialog: false,
+      deleteFeedbackDialog: false,
+      deleteFeedbackId: "",
     };
   },
   mounted() {
     this.fetchFeedbacks();
+    setInterval(this.fetchFeedbacks, 5000);
   },
   methods: {
     fetchFeedbacks() {
@@ -145,6 +170,32 @@ export default {
           this.$toast.error(error, {
             duration: 6000,
           });
+        });
+    },
+    openDeleteFeedbackDialog(item) {
+      this.deleteFeedbackId = item.feedback_id;
+
+      this.deleteFeedbackDialog = true;
+    },
+    closeDeleteFeedbackDialog() {
+      this.deleteFeedbackDialog = false;
+    },
+    deleteFeedback() {
+      console.log(this.deleteFeedbackId);
+      apiClient
+        .delete(`/feedbacks/${this.deleteFeedbackId}/`)
+        .then(() => {
+          // Refresh the product list
+          this.fetchFeedbacks();
+          this.$toast.success("Feedback" + this.deleteFeedbackId + " deleted", {
+            duration: 6000,
+          });
+          this.deleteFeedbackId = "";
+          this.deleteFeedbackDialog = false;
+        })
+        .catch((error) => {
+          console.error(error);
+          // Handle error
         });
     },
   },

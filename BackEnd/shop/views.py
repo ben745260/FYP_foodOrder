@@ -29,6 +29,20 @@ class ProductRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        # Check if the "status" field is present in the request data
+        if 'status' in request.data:
+            # Toggle the "status" field
+            instance.status = not instance.status
+
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data)
+
 # ================================================================
 
 class UserRegistrationView(generics.CreateAPIView):
@@ -105,6 +119,9 @@ class ProductCategoryCreateAPIView(generics.ListCreateAPIView):
 
 # ================================================================
 class UserFeedbackCreateAPIView(generics.ListCreateAPIView):
+    queryset = UserFeedback.objects.all()
+    serializer_class = UserFeedbackSerializer
+class UserFeedbackRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = UserFeedback.objects.all()
     serializer_class = UserFeedbackSerializer
 # ================================================================
