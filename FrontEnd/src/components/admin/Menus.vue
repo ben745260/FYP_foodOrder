@@ -383,7 +383,7 @@ export default {
       }
 
       formData.append("product_detail", this.newProduct.product_detail);
-
+      // formData.append("status", "ture");
       apiClient
         .post("/products/", formData)
         .then((response) => {
