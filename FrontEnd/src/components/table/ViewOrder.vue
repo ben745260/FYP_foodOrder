@@ -5,38 +5,43 @@
         v-for="(orderItems, orderId, index) in groupedOrderItems"
         :key="orderId"
       >
-        <v-card class="mb-5" v-if="!orderItems.order_checkout">
-          <v-card-title>
-            Order:&nbsp; {{ index + 1 }}<br />
-            <span
-              >Last Updated: {{ getLastUpdateDateTime(orderId) }}</span
-            ></v-card-title
-          >
-          <v-card-text>
-            <v-table>
-              <thead>
-                <tr>
-                  <th class="text-left fw-bold">Product</th>
-                  <th class="text-right">Quantity</th>
-                  <th class="text-right">Product Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="orderItem in orderItems" :key="orderItem.product_id">
-                  <td>
-                    <strong>{{
-                      getProductById(orderItem.product_id)?.product_name
-                    }}</strong>
-                  </td>
-                  <td class="text-right">{{ orderItem.quantity }}</td>
-                  <td class="text-right">${{ orderItem.product_amount }}</td>
-                </tr>
-              </tbody>
-            </v-table>
-            <v-divider></v-divider>
-            <h5 class="float-right">Total: ${{ getAmount(orderId) }}</h5>
-          </v-card-text>
-        </v-card>
+        <div v-if="!getCheckout(orderId)">
+          <v-card class="mb-5">
+            <v-card-title>
+              Order:&nbsp; {{ index + 1 }}<br />
+              <span
+                >Last Updated: {{ getLastUpdateDateTime(orderId) }}</span
+              ></v-card-title
+            >
+            <v-card-text>
+              <v-table>
+                <thead>
+                  <tr>
+                    <th class="text-left fw-bold">Product</th>
+                    <th class="text-right">Quantity</th>
+                    <th class="text-right">Product Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="orderItem in orderItems"
+                    :key="orderItem.product_id"
+                  >
+                    <td>
+                      <strong>{{
+                        getProductById(orderItem.product_id)?.product_name
+                      }}</strong>
+                    </td>
+                    <td class="text-right">{{ orderItem.quantity }}</td>
+                    <td class="text-right">${{ orderItem.product_amount }}</td>
+                  </tr>
+                </tbody>
+              </v-table>
+              <v-divider></v-divider>
+              <h5 class="float-right">Total: ${{ getAmount(orderId) }}</h5>
+            </v-card-text>
+          </v-card>
+        </div>
       </div>
     </v-container>
   </v-app>
@@ -54,6 +59,7 @@ export default {
       orderLastUpdateDates: [], // Add order last update times object
       orderLastUpdateTimes: [], // Add order last update times object
       orderAmount: [],
+      orderCheckout: [],
       tableId: this.$route.params.tables,
     };
   },
@@ -76,6 +82,8 @@ export default {
   mounted() {
     this.fetchOrderItems();
     this.fetchProducts();
+    setInterval(this.fetchOrderItems, 5000);
+    setInterval(this.fetchProducts, 5000);
   },
   methods: {
     fetchOrderItems() {
@@ -95,6 +103,8 @@ export default {
             this.orderLastUpdateTimes[orderId] = lastUpdateTime;
             const amount = order.order_amount;
             this.orderAmount[orderId] = amount;
+            const checkout = order.order_checkout;
+            this.orderCheckout[orderId] = checkout;
           });
           // Extract the order IDs from the filtered orders
           const orderIds = orders.map((order) => order.order_id);
@@ -155,6 +165,13 @@ export default {
         return amount;
       }
       return "Unknown";
+    },
+    getCheckout(orderId) {
+      const Checkout = this.orderCheckout[orderId];
+      if (Checkout) {
+        return true; // Return true if Checkout exists
+      }
+      return false; // Return false if Checkout does not exist
     },
   },
 };
