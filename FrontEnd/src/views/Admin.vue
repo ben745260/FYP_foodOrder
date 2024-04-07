@@ -21,7 +21,7 @@
             <span class="fw-semibold">Menus</span>
           </v-list-item>
           <v-list-item link prepend-icon="mdi-comment-quote" title="" :to="{ path: '/admin/userFeedback' }" :class="{ active: isActive('/admin/userFeedback') }">
-            <span class="fw-semibold">User Feedback</span>
+            <span class="fw-semibold">Customer Feedback</span>
           </v-list-item>
           <v-list-item link prepend-icon="mdi-poll" title="" :to="{ path: '/admin/analysis' }" :class="{ active: isActive('/admin/analysis') }">
             <span class="fw-semibold">Analysis</span>

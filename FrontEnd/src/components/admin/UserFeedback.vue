@@ -2,7 +2,7 @@
   <v-app>
     <v-card fluid class="m-3">
       <v-card-title>
-        <span class="fs-1">User Feedback</span>
+        <span class="fs-1">Customer Feedback</span>
         <v-btn
           color="primary"
           class="float-right"
