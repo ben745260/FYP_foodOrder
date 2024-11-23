@@ -332,7 +332,7 @@ export default {
       this.newProduct.category = null;
       this.newProduct.product_detail = "";
       this.newProduct.image = null;
-
+      this.newProduct.imageUrl = ""
       this.gptBtn = true;
     },
     openAddCategoryDialog() {
