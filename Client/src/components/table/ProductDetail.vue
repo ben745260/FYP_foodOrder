@@ -70,7 +70,7 @@
             :variant="'elevated'"
             color="primary"
             @click="decrementQuantity"
-            size="small"
+            size="x-small"
           >
             <v-icon class="mdi mdi-minus"></v-icon>
           </v-btn>
@@ -81,7 +81,7 @@
             :variant="'elevated'"
             color="primary"
             @click="incrementQuantity"
-            size="small"
+            size="x-small"
           >
             <v-icon class="mdi mdi-plus"></v-icon>
           </v-btn>

@@ -25,7 +25,9 @@
     </v-app-bar>
 
     <v-main class="fixed">
-      <router-view></router-view>
+      <div class="mt-5">
+        <router-view></router-view>
+      </div>
     </v-main>
 
     <v-footer color="primary" app>

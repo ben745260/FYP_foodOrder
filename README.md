@@ -7,8 +7,8 @@ Overall grade: A-
 The purpose of this project is to build a user-friendly and intuitive website for a restaurant point-of-sale (POS) system that seamlessly integrates the chat GPT functionalities. The objective is to create a central platform where customers can place orders, view menus, provide feedback, and interact with the chat GPT plugin, enhancing the overall user experience and facilitating efficient communication between customers and the POS system.
 
 ## Tech Stack
-Frontend: Vue.js + Bootstrap + Vuetify + ChatGPT API
-Backend: Django + Django REST framework + sqlite
+- Frontend: Vue.js + Bootstrap + Vuetify + ChatGPT API
+- Backend: Django + Django REST framework + sqlite
 
 
 
