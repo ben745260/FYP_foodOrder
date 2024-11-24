@@ -27,7 +27,11 @@
             <v-img
               :src="selectedProduct ? selectedProduct.image : ''"
               class="rounded border border-2 border-danger"
-            />
+              width="100%"
+              max-width="400px"
+              max-height="200px"
+            >
+            </v-img>
             <div class="mt-4 fs-5">
               <strong>Desciption:</strong>
               <div
